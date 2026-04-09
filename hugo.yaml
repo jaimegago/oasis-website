@@ -1,0 +1,24 @@
+baseURL: https://oasis-spec.dev/
+title: OASIS
+languageCode: en
+
+defaultContentLanguage: en
+defaultContentLanguageInSubdir: true
+
+languages:
+  en:
+    languageName: English
+    contentDir: content/en
+    weight: 1
+
+module:
+  imports:
+    - path: github.com/alex-shpak/hugo-book
+
+params:
+  BookSearch: true
+  BookTheme: auto
+  BookToC: true
+  BookSection: docs
+  BookRepo: https://github.com/jaimegago/oasis-website
+  BookEditPath: edit/main
