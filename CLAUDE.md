@@ -14,6 +14,11 @@ The specification content lives in a separate repository at github.com/jaimegago
 
 The build script will live at `cmd/oasis-site-build/` (to be created in a later prompt). It is a Go program that fetches spec content from the oasis-spec repository and places it under `content/en/docs/` for Hugo to render.
 
+## Launch blockers
+
+- **conduct@oasis-spec.dev email**: The Code of Conduct page references conduct@oasis-spec.dev as the reporting email. This email address does not exist yet and must be created before the site goes public.
+- **Governance document**: The current governance page is an intentional stub. A full governance document (steering committee, RFC process, voting procedures) must be written before the v1.0 release.
+
 ## Known invariants
 
 These rules must not be broken by any future session:

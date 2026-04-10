@@ -737,3 +737,333 @@ input[type="submit"] {
     "Roboto Mono", "Courier New", monospace;
   font-size: 0.9375rem;
 }
+
+// ---------------------------------------------------------------------------
+// 20. Callout boxes
+// ---------------------------------------------------------------------------
+
+.oasis-callout-info {
+  background: var(--oasis-bg-elevated);
+  border-left: 4px solid var(--oasis-border-strong);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-6);
+}
+
+// ---------------------------------------------------------------------------
+// 21. Landing page — Hero
+// ---------------------------------------------------------------------------
+
+.oasis-hero {
+  text-align: center;
+  padding: var(--space-16) 0 var(--space-12);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.oasis-hero h1 {
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+}
+
+.oasis-hero-tagline {
+  font-size: 1.25rem;
+  color: var(--oasis-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.oasis-hero-version {
+  margin-bottom: var(--space-6);
+}
+
+.oasis-hero-version .version-badge {
+  display: inline-block;
+  background: var(--oasis-code-bg);
+  border: 1px solid var(--oasis-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-3);
+  font-size: 0.875rem;
+  text-decoration: none;
+  color: var(--oasis-text-secondary);
+}
+
+.oasis-hero-thesis {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  margin-bottom: var(--space-8);
+}
+
+.oasis-hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+}
+
+.oasis-hero-ctas .book-btn {
+  text-decoration: none;
+  font-size: 0.9375rem;
+  white-space: nowrap;
+}
+
+.oasis-hero-ctas .book-btn-secondary {
+  background: transparent;
+  color: var(--oasis-accent);
+  border: 1px solid var(--oasis-accent);
+
+  &:hover {
+    background: var(--oasis-accent);
+    color: var(--oasis-bg-elevated);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 22. Landing page — Sections
+// ---------------------------------------------------------------------------
+
+.oasis-section {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: var(--space-12) 0;
+  border-top: 1px solid var(--oasis-border);
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: var(--space-4);
+  }
+
+  h3 {
+    font-size: 1.375rem;
+    font-weight: 600;
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-3);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 23. Landing page — How-it-works diagram
+// ---------------------------------------------------------------------------
+
+.oasis-phases-diagram {
+  margin: var(--space-8) 0;
+  overflow-x: auto;
+
+  svg {
+    display: block;
+    width: 100%;
+    max-width: 780px;
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 24. Landing page — Differentiators (3-column grid)
+// ---------------------------------------------------------------------------
+
+.oasis-differentiators {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-8);
+  margin-top: var(--space-6);
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+.oasis-differentiator {
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: var(--space-2);
+  }
+
+  p {
+    font-size: 0.9375rem;
+    color: var(--oasis-text-secondary);
+    line-height: 1.6;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 25. Landing page — Specification map (2-column)
+// ---------------------------------------------------------------------------
+
+.oasis-spec-map {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  margin-top: var(--space-6);
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+.oasis-spec-map-column {
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: var(--space-3);
+    color: var(--oasis-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8125rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--oasis-border);
+    line-height: 1.5;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    a {
+      font-weight: 600;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 26. Landing page — Status grid
+// ---------------------------------------------------------------------------
+
+.oasis-status-grid {
+  display: grid;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.oasis-status-item {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--oasis-border);
+
+  @media (max-width: 720px) {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+}
+
+.oasis-status-label {
+  font-weight: 600;
+  min-width: 160px;
+  flex-shrink: 0;
+  color: var(--oasis-text-secondary);
+}
+
+.oasis-status-value {
+  color: var(--oasis-text);
+}
+
+// ---------------------------------------------------------------------------
+// 27. Site footer (3-column, all pages)
+// ---------------------------------------------------------------------------
+
+.oasis-footer {
+  border-top: 1px solid var(--oasis-border);
+  padding: var(--space-10) 0 var(--space-8);
+  margin-top: var(--space-12);
+}
+
+.oasis-footer-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-8);
+  max-width: 860px;
+  margin: 0 auto;
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    text-align: center;
+  }
+}
+
+.oasis-footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin-bottom: var(--space-2);
+  }
+
+  a {
+    color: var(--oasis-text-secondary);
+    text-decoration: none;
+    font-size: 0.9375rem;
+
+    &:hover {
+      color: var(--oasis-accent);
+    }
+  }
+}
+
+.oasis-footer-brand {
+  text-align: center;
+}
+
+.oasis-footer-wordmark {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--oasis-text);
+  margin-bottom: var(--space-1);
+}
+
+.oasis-footer-tagline {
+  font-size: 0.8125rem;
+  color: var(--oasis-text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.oasis-footer-license {
+  font-size: 0.75rem;
+  color: var(--oasis-text-tertiary);
+}
+
+.oasis-footer-meta {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  @media (max-width: 720px) {
+    text-align: center;
+    align-items: center;
+  }
+}
+
+.oasis-footer-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  color: var(--oasis-text-secondary);
+  font-weight: 500;
+}
+
+.oasis-footer-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--oasis-accent);
+  display: inline-block;
+}
