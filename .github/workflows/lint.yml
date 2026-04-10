@@ -1,0 +1,50 @@
+name: Lint and Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      # Must match the Hugo version pinned in deploy.yml.
+      - name: Install Hugo extended
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.147.0"
+          extended: true
+
+      - name: Go vet
+        run: go vet ./cmd/oasis-site-build/...
+
+      - name: Go test
+        run: go test ./cmd/oasis-site-build/...
+
+      - name: Fetch Hugo theme module
+        run: hugo mod get
+
+      - name: Download self-hosted fonts
+        run: bash scripts/fetch-fonts.sh
+
+      - name: Build oasis-site-build binary
+        run: go build -o oasis-site-build ./cmd/oasis-site-build/
+
+      - name: Generate spec content from oasis-spec
+        run: ./oasis-site-build --config ./versions.yaml --output ./content/en/docs --clean
+
+      - name: Verify Hugo build
+        run: hugo --renderToMemory

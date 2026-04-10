@@ -1,0 +1,72 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run
+# in-progress and latest queued. Do not cancel in-progress runs — let them
+# finish so the site is never left in a partially-deployed state.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      # Hugo extended is required for SCSS processing.
+      # Pin to a specific version to keep builds reproducible.
+      # To upgrade: update the version here, test locally, then merge.
+      - name: Install Hugo extended
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.147.0"
+          extended: true
+
+      - name: Fetch Hugo theme module
+        run: hugo mod get
+
+      - name: Download self-hosted fonts
+        run: bash scripts/fetch-fonts.sh
+
+      - name: Build oasis-site-build binary
+        run: go build -o oasis-site-build ./cmd/oasis-site-build/
+
+      - name: Generate spec content from oasis-spec
+        run: ./oasis-site-build --config ./versions.yaml --output ./content/en/docs --clean
+
+      - name: Build site with Hugo
+        run: hugo --minify
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public/
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    # Only deploy from main, never from PRs or other branches.
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

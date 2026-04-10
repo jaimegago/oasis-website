@@ -30,6 +30,36 @@ These rules must not be broken by any future session:
 - **Self-hosted fonts**: IBM Plex Sans and JetBrains Mono are downloaded by `scripts/fetch-fonts.sh` into `static/fonts/` (gitignored). No runtime requests to external font services.
 - **Use design tokens**: All colors must come from `--oasis-*` CSS custom properties. Never hard-code hex color values in stylesheets. All spacing uses `--space-*` tokens; all border-radius uses `--radius-*` tokens.
 
+## Deployment
+
+The site deploys to GitHub Pages automatically via GitHub Actions. Three workflow files live under `.github/workflows/`:
+
+### Workflow files
+
+- **`deploy.yml`** — Runs on push to `main` and on manual `workflow_dispatch`. Two jobs: `build` (installs Go, Hugo extended, fetches fonts, runs the build script against `versions.yaml` to populate `content/en/docs/`, then runs `hugo --minify`) and `deploy` (pushes the built `public/` directory to GitHub Pages). The deploy job only runs on the `main` branch — never on PRs.
+- **`pr-preview.yml`** — Runs on pull requests targeting `main`. Same build steps as `deploy.yml`, but instead of deploying, uploads `public/` as a downloadable artifact and posts a comment on the PR with a link.
+- **`lint.yml`** — Runs on every push to `main` and on PRs. Runs `go vet`, `go test` on the build script, then does a full site build with `hugo --renderToMemory` to verify the site compiles without errors.
+
+### Build pipeline order
+
+The build script runs **before** Hugo. The pipeline is: checkout → install tools → `fetch-fonts.sh` → `go build` the binary → run the binary (populates `content/en/docs/`) → `hugo --minify` (renders the site from the populated content).
+
+### Hugo version
+
+Hugo extended is pinned to a specific version in all three workflow files (currently `0.147.0`). When upgrading, update all three files and test locally first.
+
+### CNAME configuration
+
+`static/CNAME` contains `oasis-spec.dev`. Hugo copies `static/` contents to `public/` unchanged, so the CNAME file ends up at the root of the deployed site, which is what GitHub Pages requires for custom domain routing.
+
+### One-time GitHub Pages setup (manual)
+
+In the GitHub repository settings, go to **Settings → Pages → Build and deployment → Source** and select **GitHub Actions** (not "Deploy from a branch"). This only needs to be done once.
+
+### Manual deploy
+
+To trigger a deploy without pushing a commit, go to the **Actions** tab in GitHub, select the **Deploy to GitHub Pages** workflow, and click **Run workflow** on the `main` branch.
+
 ## Visual identity
 
 ### Typography rationale

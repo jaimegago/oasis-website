@@ -1,0 +1,93 @@
+name: PR Preview Build
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      # Must match the Hugo version pinned in deploy.yml.
+      - name: Install Hugo extended
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.147.0"
+          extended: true
+
+      - name: Fetch Hugo theme module
+        run: hugo mod get
+
+      - name: Download self-hosted fonts
+        run: bash scripts/fetch-fonts.sh
+
+      - name: Build oasis-site-build binary
+        run: go build -o oasis-site-build ./cmd/oasis-site-build/
+
+      - name: Generate spec content from oasis-spec
+        run: ./oasis-site-build --config ./versions.yaml --output ./content/en/docs --clean
+
+      - name: Build site with Hugo
+        run: hugo --minify
+
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-preview-pr-${{ github.event.number }}
+          path: public/
+          retention-days: 7
+
+      - name: Comment on PR with artifact link
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = [
+              `### 📦 Preview build ready`,
+              ``,
+              `A preview of this PR has been built and uploaded as a workflow artifact.`,
+              ``,
+              `**[Download the preview artifact](${runUrl})**`,
+              ``,
+              `Download the \`site-preview-pr-${context.issue.number}\` artifact from the workflow run, unzip it, and open \`index.html\` in a browser to review.`,
+              ``,
+              `<sub>Built from ${context.sha.slice(0, 7)}</sub>`,
+            ].join('\n');
+
+            // Update existing comment if one exists, otherwise create a new one.
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const botComment = comments.find(c =>
+              c.user.type === 'Bot' && c.body.includes('Preview build ready')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
