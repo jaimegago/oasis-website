@@ -10,6 +10,13 @@ _vendor/
 # Build script cache
 .cache/
 
+# Build script binary
+/oasis-site-build
+
+# Generated content (rebuilt by oasis-site-build)
+content/en/docs/
+data/versions.yaml
+
 # OS files
 .DS_Store
 Thumbs.db

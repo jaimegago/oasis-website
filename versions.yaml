@@ -1,0 +1,19 @@
+# versions.yaml — Declares which OASIS spec versions the site should build.
+#
+# Schema:
+#   versions:          list of version entries
+#     - version:       string — short version identifier used in URL paths (e.g. "v0.4")
+#       tag:           string — git tag (or branch) in the oasis-spec repository to check out
+#       label:         string — human-readable label for the version dropdown
+#       status:        enum   — one of: draft, current, archived
+#       default:       bool   — exactly one entry must be true; this version is shown by default
+#
+# The build script at cmd/oasis-site-build/ is the authoritative reference
+# for how these fields are consumed. See its CLAUDE.md for pipeline details.
+
+versions:
+  - version: v0.4
+    tag: main
+    label: v0.4.0-draft
+    status: draft
+    default: true

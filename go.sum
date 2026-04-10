@@ -1,2 +1,5 @@
 github.com/alex-shpak/hugo-book v0.0.0-20260408113943-97d7ee40edf1 h1:vwHQ2uXe6gC9kXre7P29AqWYB8Gek5iQTGnJHKBbqDg=
 github.com/alex-shpak/hugo-book v0.0.0-20260408113943-97d7ee40edf1/go.mod h1:L4NMyzbn15fpLIpmmtDg9ZFFyTZzw87/lk7M2bMQ7ds=
+gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
+gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=

@@ -5,6 +5,11 @@ languageCode: en
 defaultContentLanguage: en
 defaultContentLanguageInSubdir: true
 
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
 languages:
   en:
     languageName: English
