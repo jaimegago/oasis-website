@@ -9,6 +9,10 @@ markup:
   goldmark:
     renderer:
       unsafe: true
+  highlight:
+    noClasses: false
+    lineNos: false
+    guessSyntax: false
 
 languages:
   en:

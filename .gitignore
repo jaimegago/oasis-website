@@ -21,6 +21,9 @@ data/versions.yaml
 .DS_Store
 Thumbs.db
 
+# Self-hosted fonts (downloaded by scripts/fetch-fonts.sh)
+static/fonts/
+
 # Editor files
 .vscode/
 .idea/

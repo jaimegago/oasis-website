@@ -1,14 +1,17 @@
 .DEFAULT_GOAL := help
 
-.PHONY: serve build clean generate help
+.PHONY: serve build clean generate fonts help
 
 generate: ## Fetch spec content and generate Hugo pages
 	go run ./cmd/oasis-site-build/
 
-serve: generate ## Generate content then start local development server with drafts enabled
+fonts: ## Download self-hosted web fonts (idempotent)
+	bash scripts/fetch-fonts.sh
+
+serve: generate fonts ## Generate content, fetch fonts, then start local development server with drafts enabled
 	hugo server -D
 
-build: generate ## Generate content then build the site with minification
+build: generate fonts ## Generate content, fetch fonts, then build the site with minification
 	hugo --minify
 
 clean: ## Remove build output, generated content, and resource cache
