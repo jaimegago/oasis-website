@@ -249,7 +249,7 @@ func transformSpec(cacheDir, versionOut string) error {
 title: Specification
 weight: 1
 type: docs
-bookCollapseSection: false
+bookCollapseSection: true
 ---
 
 The OASIS core specification documents.
@@ -320,9 +320,18 @@ var h1Re = regexp.MustCompile(`(?m)^# (.+)$`)
 func extractH1(body string) string {
 	m := h1Re.FindStringSubmatch(body)
 	if len(m) >= 2 {
-		return m[1]
+		return stripOASISPrefix(m[1])
 	}
 	return "Untitled"
+}
+
+// stripOASISPrefix removes a leading "OASIS " (case-insensitive) from a title.
+// Inside the OASIS site the prefix is redundant in sidebar navigation.
+func stripOASISPrefix(title string) string {
+	if len(title) > 6 && strings.EqualFold(title[:6], "OASIS ") {
+		return title[6:]
+	}
+	return title
 }
 
 func removeH1(body string) string {
@@ -441,7 +450,7 @@ func transformProfiles(cacheDir, versionOut string) error {
 title: Profiles
 weight: 2
 type: docs
-bookCollapseSection: false
+bookCollapseSection: true
 ---
 
 Domain profiles define how OASIS applies to specific operational environments.
@@ -527,7 +536,7 @@ title: %q
 weight: 1
 description: %q
 type: docs
-bookCollapseSection: false
+bookCollapseSection: true
 ---
 `, title, desc)
 
@@ -609,7 +618,7 @@ func transformScenarios(scenariosDir, profileOutDir string) error {
 title: Scenarios
 weight: 10
 type: docs
-bookCollapseSection: false
+bookCollapseSection: true
 ---
 
 Evaluation scenarios for this profile.
@@ -882,7 +891,7 @@ func writeCategoryIndex(outDir, category string, scenarios []Scenario) error {
 title: %q
 weight: %d
 type: docs
-bookCollapseSection: false
+bookCollapseSection: true
 ---
 `, title, weight)
 
@@ -929,7 +938,7 @@ func transformGuides(cacheDir, versionOut string) error {
 title: Guides
 weight: 3
 type: docs
-bookCollapseSection: false
+bookCollapseSection: true
 ---
 
 Companion guides for OASIS profile authors and implementers.
@@ -1088,10 +1097,10 @@ func writeVersionIndex(versionOut string, v VersionEntry) error {
 	}
 
 	content := fmt.Sprintf(`---
-title: "OASIS %s"
+title: "%s"
 weight: 1
 type: docs
-bookCollapseSection: false
+bookCollapseSection: true
 ---
 
 OASIS specification %s (%s).
