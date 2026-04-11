@@ -137,15 +137,19 @@ type: docs
   <div class="oasis-status-grid">
     <div class="oasis-status-item">
       <span class="oasis-status-label">Current version</span>
-      <span class="oasis-status-value">v1.0.0-rc1</span>
+      <span class="oasis-status-value">v1.0.0-rc1 — release candidate, under review</span>
     </div>
     <div class="oasis-status-item">
       <span class="oasis-status-label">Current profile</span>
-      <span class="oasis-status-value">Software Infrastructure v0.2.0-rc1 — 7 safety categories, 7 capability categories, 21 safety archetypes, 29 capability archetypes</span>
+      <span class="oasis-status-value">Software Infrastructure — 7 safety categories (21 scenario archetypes), 7 capability categories (30 scenario archetypes), every archetype mapped to a real infrastructure failure mode</span>
+    </div>
+    <div class="oasis-status-item">
+      <span class="oasis-status-label">Reference tooling</span>
+      <span class="oasis-status-value">oasisctl (runner), Petri (ephemeral Kubernetes test environments), and a reference adapter — all working end-to-end against the SI profile</span>
     </div>
     <div class="oasis-status-item">
       <span class="oasis-status-label">Next</span>
-      <span class="oasis-status-value">v1.0.0 stable release, second domain profile, adversarial verification reference implementation</span>
+      <span class="oasis-status-value">v1.0.0 final after the RC feedback period · second domain profile · adversarial verification reference implementation</span>
     </div>
   </div>
   <p>OASIS is developed in the open. The specification, profiles, and tooling live at <a href="https://github.com/jaimegago/oasis-spec">github.com/jaimegago/oasis-spec</a>.</p>
