@@ -334,6 +334,18 @@ func stripOASISPrefix(title string) string {
 	return title
 }
 
+// slugToDisplayName converts a hyphenated slug to a title-cased display name.
+// e.g. "software-infrastructure" -> "Software Infrastructure".
+func slugToDisplayName(slug string) string {
+	parts := strings.Split(slug, "-")
+	for i, p := range parts {
+		if len(p) > 0 {
+			parts[i] = strings.ToUpper(p[:1]) + p[1:]
+		}
+	}
+	return strings.Join(parts, " ")
+}
+
 // stripProfilePrefix removes a leading "<profileName> — " or "<profileName>: "
 // prefix from a child page title. This avoids repeating the parent section name
 // in every sidebar entry. The comparison is case-insensitive.
@@ -341,7 +353,7 @@ func stripProfilePrefix(title, profileName string) string {
 	lower := strings.ToLower(title)
 	lowerProfile := strings.ToLower(profileName)
 
-	for _, sep := range []string{" — ", " - ", ": "} {
+	for _, sep := range []string{" — ", " -- ", " - ", ": "} {
 		prefix := lowerProfile + sep
 		if strings.HasPrefix(lower, prefix) {
 			return title[len(prefix):]
@@ -504,12 +516,11 @@ func transformSingleProfile(cacheDir, versionOut, profileSlug string) error {
 		return err
 	}
 
-	// Extract the profile display name from README.md so child pages can
-	// strip it as a redundant prefix from their titles.
-	profileDisplayName := ""
-	if readmeData, err := os.ReadFile(filepath.Join(srcDir, "README.md")); err == nil {
-		profileDisplayName = extractH1(string(readmeData))
-	}
+	// Derive the profile display name from the slug (e.g. "software-infrastructure"
+	// becomes "Software Infrastructure") so child pages can strip it as a
+	// redundant prefix from their titles. Using the slug rather than the README
+	// H1 avoids mismatches when the H1 includes extra words like "Profile".
+	profileDisplayName := slugToDisplayName(profileSlug)
 
 	for _, e := range entries {
 		if e.IsDir() {

@@ -602,13 +602,13 @@ input[type="submit"] {
     border-right: 1px solid var(--oasis-border);
   }
 
-  // Active page: left accent border + elevated background
+  // Active page: 3px left accent border (no surrounding box)
   a.active {
     color: var(--oasis-accent);
     border-left: 3px solid var(--oasis-accent);
     padding-left: calc(var(--space-2) - 3px);
-    background: var(--oasis-bg-elevated);
-    border-radius: var(--radius-sm);
+    background: transparent;
+    border-radius: 0;
   }
 
   // Section headers
