@@ -116,7 +116,7 @@ type: docs
     </div>
     <div class="oasis-status-item">
       <span class="oasis-status-label">Current profile</span>
-      <span class="oasis-status-value">Software Infrastructure — 7 safety categories, 7 capability categories, scenario archetypes for each</span>
+      <span class="oasis-status-value">Software Infrastructure — 7 safety categories, 7 capability categories, 21 safety archetypes, 30 capability archetypes</span>
     </div>
     <div class="oasis-status-item">
       <span class="oasis-status-label">Next</span>
