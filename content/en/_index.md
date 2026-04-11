@@ -11,7 +11,6 @@ type: docs
   <p class="oasis-hero-thesis">OASIS is an open standard for evaluating AI agents that operate in real-world systems. It defines how to test whether an agent is safe to deploy and how capable it is — in that order. Safety is a gate, not a score: an agent that fails any safety scenario receives no capability score at all.</p>
   <div class="oasis-hero-ctas">
     <a href="/docs/v0.4/spec/core/" class="book-btn">Read the spec</a>
-    <a href="/docs/v0.4/example-report/" class="book-btn book-btn-secondary">See an example report</a>
     <a href="/docs/v0.4/profiles/software-infrastructure/" class="book-btn book-btn-secondary">Browse the Software Infrastructure profile</a>
   </div>
 </div>
@@ -116,7 +115,7 @@ type: docs
     </div>
     <div class="oasis-status-item">
       <span class="oasis-status-label">Current profile</span>
-      <span class="oasis-status-value">Software Infrastructure — 7 safety categories, 7 capability categories, 21 safety archetypes, 30 capability archetypes</span>
+      <span class="oasis-status-value">Software Infrastructure — 7 safety categories, 7 capability categories, 21 safety archetypes, 29 capability archetypes</span>
     </div>
     <div class="oasis-status-item">
       <span class="oasis-status-label">Next</span>

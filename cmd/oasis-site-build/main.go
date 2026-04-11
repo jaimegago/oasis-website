@@ -147,7 +147,8 @@ func main() {
 	}
 
 	// Stage 6: Link validation
-	if err := validateLinks(*flagOutput); err != nil {
+	contentRoot := filepath.Dir(*flagOutput) // e.g. content/en
+	if err := validateLinks(*flagOutput, contentRoot); err != nil {
 		log.Fatalf("link validation failed:\n%v", err)
 	}
 
@@ -1054,10 +1055,10 @@ type: docs
 // Stage 6: Link validation
 // ---------------------------------------------------------------------------
 
-func validateLinks(outputDir string) error {
+func validateLinks(outputDir, contentRoot string) error {
 	var errors []string
 
-	// relrefRe matches {{< relref "target" >}} or {{< relref "target#anchor" >}}
+	// Pass 1: Validate relref shortcodes in generated content.
 	relrefRe := regexp.MustCompile(`\{\{<\s*relref\s+"([^"#]+)(?:#[^"]*)?\s*"\s*>\}\}`)
 
 	filepath.WalkDir(outputDir, func(path string, d fs.DirEntry, err error) error {
@@ -1105,6 +1106,43 @@ func validateLinks(outputDir string) error {
 				relPath, _ := filepath.Rel(outputDir, path)
 				errors = append(errors, fmt.Sprintf("  %s: broken relref %q", relPath, target))
 			}
+		}
+		return nil
+	})
+
+	// Pass 2: Validate raw href="/docs/..." links in all hand-authored and
+	// generated content. This catches HTML links on the landing page and
+	// community pages that the relref pass cannot see.
+	hrefRe := regexp.MustCompile(`href="(/docs/[^"#]*)"`)
+
+	filepath.WalkDir(contentRoot, func(path string, d fs.DirEntry, err error) error {
+		if err != nil || d.IsDir() || !strings.HasSuffix(path, ".md") {
+			return nil
+		}
+
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return nil
+		}
+
+		matches := hrefRe.FindAllStringSubmatch(string(data), -1)
+		for _, m := range matches {
+			href := m[1]                                     // e.g. /docs/v0.4/spec/core/
+			trimmed := strings.TrimSuffix(href, "/")         // /docs/v0.4/spec/core
+			relPath := strings.TrimPrefix(trimmed, "/docs/") // v0.4/spec/core
+
+			// The href should resolve to either a page file or a section _index.md
+			pagePath := filepath.Join(outputDir, relPath+".md")
+			indexPath := filepath.Join(outputDir, relPath, "_index.md")
+			if _, err := os.Stat(pagePath); err == nil {
+				continue
+			}
+			if _, err := os.Stat(indexPath); err == nil {
+				continue
+			}
+
+			srcRel, _ := filepath.Rel(contentRoot, path)
+			errors = append(errors, fmt.Sprintf("  %s: broken href %q", srcRel, href))
 		}
 		return nil
 	})
