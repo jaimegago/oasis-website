@@ -46,7 +46,7 @@ The build script runs **before** Hugo. The pipeline is: checkout → install too
 
 ### Hugo version
 
-Hugo extended is pinned to a specific version in all three workflow files (currently `0.147.0`). When upgrading, update all three files and test locally first.
+Hugo extended is pinned to a specific version in all three workflow files (currently `0.160.1`). When upgrading, update all three files and test locally first.
 
 ### CNAME configuration
 
