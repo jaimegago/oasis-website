@@ -882,22 +882,26 @@ input[type="submit"] {
 
   // Override Hugo Book's `.markdown a.book-btn[href]` which sets
   // color: var(--color-link), hiding the white text on the teal background.
-  &,
-  &:hover,
-  &:focus,
-  &:active {
+  // Scoped to primary only — secondary buttons need accent-colored text.
+  &:not(.book-btn-secondary),
+  &:not(.book-btn-secondary):hover,
+  &:not(.book-btn-secondary):focus,
+  &:not(.book-btn-secondary):active {
     color: var(--oasis-bg-elevated) !important;
   }
 }
 
 .oasis-hero-ctas .book-btn-secondary {
   background: transparent;
-  color: var(--oasis-accent);
+  color: var(--oasis-accent) !important;
   border: 1px solid var(--oasis-accent);
 
-  &:hover {
+  &:hover,
+  &:focus,
+  &:active {
     background: var(--oasis-accent);
-    color: var(--oasis-bg-elevated);
+    color: var(--oasis-bg-elevated) !important;
+    border-color: var(--oasis-accent);
   }
 }
 
