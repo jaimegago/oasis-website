@@ -64,10 +64,10 @@ var (
 // where the file numbering doesn't match the desired sidebar order.
 // Desired order after Reporting & Conformance (weight 6):
 //
-//	Provider Conformance → Design Principles → Adversarial Verification (optional, last)
+//	Design Principles → Provider Conformance → Adversarial Verification (optional, last)
 var specWeightOverride = map[string]int{
-	"provider-conformance":     70, // was 9 (from prefix 08); before design principles
-	"principles":               75, // was 7 (from prefix 06); non-normative, near end
+	"principles":               70, // was 7 (from prefix 06); non-normative, after reporting
+	"provider-conformance":     75, // was 9 (from prefix 08); after design principles
 	"adversarial-verification": 80, // was 8 (from prefix 07); optional extension, last
 }
 
