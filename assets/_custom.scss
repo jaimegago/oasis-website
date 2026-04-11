@@ -637,24 +637,98 @@ input[type="submit"] {
 }
 
 // ---------------------------------------------------------------------------
-// 13. Search highlight
+// 13. DocSearch v4 — OASIS theme mapping
 // ---------------------------------------------------------------------------
 
+// Map DocSearch CSS variables to OASIS design tokens
+:root {
+  --docsearch-primary-color: var(--oasis-accent);
+  --docsearch-text-color: var(--oasis-text);
+  --docsearch-secondary-text-color: var(--oasis-text-secondary);
+  --docsearch-muted-color: var(--oasis-text-tertiary);
+  --docsearch-container-background: rgba(26, 26, 26, 0.6);
+  --docsearch-modal-background: var(--oasis-bg-elevated);
+  --docsearch-modal-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  --docsearch-searchbox-background: var(--oasis-code-bg);
+  --docsearch-searchbox-focus-background: var(--oasis-bg);
+  --docsearch-hit-background: var(--oasis-bg-elevated);
+  --docsearch-hit-color: var(--oasis-text);
+  --docsearch-hit-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --docsearch-highlight-color: var(--oasis-accent);
+  --docsearch-logo-color: var(--oasis-text-tertiary);
+  --docsearch-footer-background: var(--oasis-bg-elevated);
+  --docsearch-footer-shadow: 0 -1px 0 var(--oasis-border);
+  --docsearch-key-background: var(--oasis-code-bg);
+  --docsearch-key-color: var(--oasis-text-secondary);
+  --docsearch-border-radius: var(--radius-md);
+  --docsearch-icon-color: var(--oasis-text-tertiary);
+  --docsearch-icon-stroke-width: 1.5;
+  --docsearch-spacing: var(--space-3);
+}
+
+// Font family override — use IBM Plex Sans throughout
+.DocSearch-Modal,
+.DocSearch-Button {
+  font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+// Search button in sidebar — full width, match sidebar style
 .book-search {
-  input {
-    border-color: var(--oasis-border);
-    background: var(--oasis-bg-elevated);
-    border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+}
 
-    &:focus {
-      border-color: var(--oasis-accent);
-    }
-  }
+.DocSearch-Button {
+  width: 100%;
+  margin: 0;
+  border: 1px solid var(--oasis-border);
+  border-radius: var(--radius-md);
+  background: var(--oasis-bg-elevated);
+  color: var(--oasis-text-secondary);
+  height: 36px;
+  padding: 0 var(--space-3);
 
-  ul a.active,
-  ul a:hover {
-    color: var(--oasis-accent);
+  &:hover {
+    border-color: var(--oasis-accent);
+    box-shadow: none;
   }
+}
+
+.DocSearch-Button-Placeholder {
+  font-size: 0.875rem;
+}
+
+.DocSearch-Button-Keys {
+  min-width: auto;
+}
+
+.DocSearch-Button-Key {
+  font-size: 0.75rem;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-sm);
+}
+
+// Modal overrides
+.DocSearch-Modal {
+  border-radius: var(--radius-lg);
+}
+
+.DocSearch-SearchBar {
+  padding: var(--space-3);
+}
+
+.DocSearch-Input {
+  font-size: 1rem;
+}
+
+// Hit results — monospace for section paths
+.DocSearch-Hit-path {
+  font-family: "JetBrains Mono", "SF Mono", "Fira Code", monospace;
+  font-size: 0.8125rem;
+}
+
+// Footer
+.DocSearch-Footer {
+  border-top: 1px solid var(--oasis-border);
 }
 
 // ---------------------------------------------------------------------------
@@ -712,7 +786,6 @@ input[type="submit"] {
 // 18. Border radius consistency
 // ---------------------------------------------------------------------------
 
-.book-search input,
 .markdown details {
   border-radius: var(--radius-md);
 }

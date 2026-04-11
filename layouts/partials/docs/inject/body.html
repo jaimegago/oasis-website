@@ -1,0 +1,12 @@
+{{/* DocSearch v4 — JavaScript initialization */}}
+{{ if default true .Site.Params.BookSearch }}
+<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@4.0.6/dist/umd/index.min.js" integrity="{{ .Site.Params.algolia.jsSRI | default "" }}" crossorigin="anonymous"></script>
+<script>
+  docsearch({
+    container: '#docsearch',
+    appId: '{{ .Site.Params.algolia.appId }}',
+    indexName: '{{ .Site.Params.algolia.indexName }}',
+    apiKey: '{{ .Site.Params.algolia.apiKey }}',
+  });
+</script>
+{{ end }}
