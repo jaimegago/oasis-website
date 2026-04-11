@@ -3,7 +3,7 @@ title: OASIS
 languageCode: en
 
 defaultContentLanguage: en
-defaultContentLanguageInSubdir: true
+defaultContentLanguageInSubdir: false
 
 markup:
   goldmark:

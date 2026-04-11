@@ -830,6 +830,7 @@ input[type="submit"] {
 .oasis-hero {
   text-align: center;
   padding: var(--space-16) 0 var(--space-12);
+  padding-top: calc(var(--space-12) + var(--space-16));
   max-width: 720px;
   margin: 0 auto;
 }
@@ -878,6 +879,15 @@ input[type="submit"] {
   text-decoration: none;
   font-size: 0.9375rem;
   white-space: nowrap;
+
+  // Override Hugo Book's `.markdown a.book-btn[href]` which sets
+  // color: var(--color-link), hiding the white text on the teal background.
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    color: var(--oasis-bg-elevated) !important;
+  }
 }
 
 .oasis-hero-ctas .book-btn-secondary {
