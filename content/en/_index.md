@@ -1,5 +1,6 @@
 ---
-title: OASIS
+title: "OASIS — Open Assessment Standard for Intelligent Systems"
+description: "OASIS v1.0.0-rc1 — an open standard for evaluating AI agents that operate in real-world systems. Feature-complete and validated end-to-end. Seeking feedback before v1.0.0 stability guarantees."
 type: docs
 ---
 
@@ -7,11 +8,15 @@ type: docs
 <div class="oasis-hero">
   <h1>OASIS</h1>
   <p class="oasis-hero-tagline">Open Assessment Standard for Intelligent Systems</p>
-  <p class="oasis-hero-version"><a href="#changelog" class="version-badge">v0.4.0-draft</a></p>
+  <p class="oasis-hero-version"><a href="https://github.com/jaimegago/oasis-spec/blob/main/CHANGELOG.md" class="version-badge">v1.0.0-rc1</a></p>
+  <div class="oasis-rc-banner">
+    <p><strong>Release candidate:</strong> OASIS v1.0.0-rc1 is feature-complete and validated end-to-end against a real AI infrastructure agent. Seeking external feedback before v1.0.0 stability guarantees.</p>
+    <p class="oasis-rc-banner-links"><a href="https://github.com/jaimegago/oasis-spec/blob/main/CHANGELOG.md">Changelog</a> · <a href="https://github.com/jaimegago/oasis-spec/issues">Open an issue</a></p>
+  </div>
   <p class="oasis-hero-thesis">OASIS is an open standard for evaluating AI agents that operate in real-world systems. It defines how to test whether an agent is safe to deploy and how capable it is — in that order. Safety is a gate, not a score: an agent that fails any safety scenario receives no capability score at all.</p>
   <div class="oasis-hero-ctas">
-    <a href="/docs/v0.4/spec/core/" class="book-btn">Read the spec</a>
-    <a href="/docs/v0.4/profiles/software-infrastructure/" class="book-btn book-btn-secondary">Browse the Software Infrastructure profile</a>
+    <a href="/docs/v1.0/spec/core/" class="book-btn">Read the spec</a>
+    <a href="/docs/v1.0/profiles/software-infrastructure/" class="book-btn book-btn-secondary">Browse the Software Infrastructure profile</a>
   </div>
 </div>
 
@@ -86,40 +91,61 @@ type: docs
     <div class="oasis-spec-map-column">
       <h3>Normative</h3>
       <ul>
-        <li><a href="/docs/v0.4/spec/core/">Core</a> — Foundational concepts, evaluation model, and architecture.</li>
-        <li><a href="/docs/v0.4/spec/scenarios/">Scenarios</a> — Schema for scenarios and scenario suites.</li>
-        <li><a href="/docs/v0.4/spec/profiles/">Profiles</a> — Structure and quality criteria for domain profiles.</li>
-        <li><a href="/docs/v0.4/spec/execution/">Execution</a> — Agent interface contract and environment model.</li>
-        <li><a href="/docs/v0.4/spec/reporting/">Reporting &amp; Conformance</a> — Verdict format and report structure.</li>
-        <li><a href="/docs/v0.4/spec/provider-conformance/">Provider Conformance</a> — Requirements for OASIS-conformant evaluation providers.</li>
-        <li><a href="/docs/v0.4/spec/adversarial-verification/">Adversarial Verification</a> — Optional extension for non-deterministic adversarial testing.</li>
+        <li><a href="/docs/v1.0/spec/core/">Core</a> — Foundational concepts, evaluation model, and architecture.</li>
+        <li><a href="/docs/v1.0/spec/scenarios/">Scenarios</a> — Schema for scenarios and scenario suites.</li>
+        <li><a href="/docs/v1.0/spec/profiles/">Profiles</a> — Structure and quality criteria for domain profiles.</li>
+        <li><a href="/docs/v1.0/spec/execution/">Execution</a> — Agent interface contract and environment model.</li>
+        <li><a href="/docs/v1.0/spec/reporting/">Reporting &amp; Conformance</a> — Verdict format and report structure.</li>
+        <li><a href="/docs/v1.0/spec/provider-conformance/">Provider Conformance</a> — Requirements for OASIS-conformant evaluation providers.</li>
+        <li><a href="/docs/v1.0/spec/adversarial-verification/">Adversarial Verification</a> — Optional extension for non-deterministic adversarial testing.</li>
       </ul>
     </div>
     <div class="oasis-spec-map-column">
       <h3>Non-normative</h3>
       <ul>
-        <li><a href="/docs/v0.4/spec/motivation/">Motivation</a> — Why OASIS exists and what gap it fills.</li>
-        <li><a href="/docs/v0.4/spec/principles/">Design Principles</a> — The principles the standard is built on.</li>
+        <li><a href="/docs/v1.0/spec/motivation/">Motivation</a> — Why OASIS exists and what gap it fills.</li>
+        <li><a href="/docs/v1.0/spec/principles/">Design Principles</a> — The principles the standard is built on.</li>
       </ul>
     </div>
   </div>
 </div>
 
-<!-- Section 5: Status -->
+<!-- Section 5: Validation -->
+<div class="oasis-section">
+  <h2>Validated end-to-end</h2>
+  <p>The release candidate was validated by executing the full SI v0.2 profile against a real AI agent (Joe) operating on a live Kubernetes cluster — not a simulation or mock environment.</p>
+  <div class="oasis-status-grid">
+    <div class="oasis-status-item">
+      <span class="oasis-status-label">Safety scenarios executed</span>
+      <span class="oasis-status-value">21 — all with deterministic PASS/FAIL verdicts</span>
+    </div>
+    <div class="oasis-status-item">
+      <span class="oasis-status-label">Provision failures</span>
+      <span class="oasis-status-value">0 — every scenario provisioned and executed cleanly</span>
+    </div>
+    <div class="oasis-status-item">
+      <span class="oasis-status-label">Missing-heuristic errors</span>
+      <span class="oasis-status-value">0 — every assertion resolved to a definitive verdict</span>
+    </div>
+  </div>
+  <p>This confirms the spec is implementable, not theoretical. The evaluation pipeline, scenario schema, and verdict model all function as specified under real-world conditions.</p>
+</div>
+
+<!-- Section 6: Status -->
 <div class="oasis-section">
   <h2>Status</h2>
   <div class="oasis-status-grid">
     <div class="oasis-status-item">
       <span class="oasis-status-label">Current version</span>
-      <span class="oasis-status-value">v0.4.0-draft</span>
+      <span class="oasis-status-value">v1.0.0-rc1</span>
     </div>
     <div class="oasis-status-item">
       <span class="oasis-status-label">Current profile</span>
-      <span class="oasis-status-value">Software Infrastructure — 7 safety categories, 7 capability categories, 21 safety archetypes, 29 capability archetypes</span>
+      <span class="oasis-status-value">Software Infrastructure v0.2.0-rc1 — 7 safety categories, 7 capability categories, 21 safety archetypes, 29 capability archetypes</span>
     </div>
     <div class="oasis-status-item">
       <span class="oasis-status-label">Next</span>
-      <span class="oasis-status-value">v1.0 stabilization, second domain profile, adversarial verification reference implementation</span>
+      <span class="oasis-status-value">v1.0.0 stable release, second domain profile, adversarial verification reference implementation</span>
     </div>
   </div>
   <p>OASIS is developed in the open. The specification, profiles, and tooling live at <a href="https://github.com/jaimegago/oasis-spec">github.com/jaimegago/oasis-spec</a>.</p>

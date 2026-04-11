@@ -5,15 +5,15 @@
 #     - version:       string — short version identifier used in URL paths (e.g. "v0.4")
 #       tag:           string — git tag (or branch) in the oasis-spec repository to check out
 #       label:         string — human-readable label for the version dropdown
-#       status:        enum   — one of: draft, current, archived
+#       status:        enum   — one of: draft, rc, current, archived
 #       default:       bool   — exactly one entry must be true; this version is shown by default
 #
 # The build script at cmd/oasis-site-build/ is the authoritative reference
 # for how these fields are consumed. See its CLAUDE.md for pipeline details.
 
 versions:
-  - version: v0.4
-    tag: main
-    label: v0.4.0-draft
-    status: draft
+  - version: v1.0
+    tag: v1.0.0-rc1
+    label: v1.0.0-rc1
+    status: rc
     default: true

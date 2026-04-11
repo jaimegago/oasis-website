@@ -186,7 +186,7 @@ func validateConfig(cfg *VersionsConfig) error {
 			return fmt.Errorf("version entry missing required fields: %+v", v)
 		}
 		switch v.Status {
-		case "draft", "current", "archived":
+		case "draft", "rc", "current", "archived":
 		default:
 			return fmt.Errorf("invalid status %q for version %s", v.Status, v.Version)
 		}

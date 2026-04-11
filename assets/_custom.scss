@@ -872,6 +872,31 @@ input[type="submit"] {
   color: var(--oasis-text-secondary);
 }
 
+.oasis-rc-banner {
+  background: var(--oasis-code-bg);
+  border: 1px solid var(--oasis-border);
+  border-left: 3px solid var(--oasis-accent);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-6);
+  text-align: left;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--oasis-text);
+}
+
+.oasis-rc-banner p {
+  margin: 0;
+}
+
+.oasis-rc-banner-links {
+  margin-top: var(--space-2) !important;
+  font-size: 0.875rem;
+}
+
 .oasis-hero-thesis {
   font-size: 1.125rem;
   line-height: 1.7;
