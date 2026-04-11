@@ -62,11 +62,13 @@ var (
 
 // specWeightOverride overrides the default prefix+1 weight for spec pages
 // where the file numbering doesn't match the desired sidebar order.
-// Provider Conformance should appear before Adversarial Verification because
-// the adversarial extension is optional and belongs last.
+// Desired order after Reporting & Conformance (weight 6):
+//
+//	Provider Conformance → Design Principles → Adversarial Verification (optional, last)
 var specWeightOverride = map[string]int{
-	"provider-conformance":     8, // was 9 (from prefix 08)
-	"adversarial-verification": 9, // was 8 (from prefix 07)
+	"provider-conformance":     70, // was 9 (from prefix 08); before design principles
+	"principles":               75, // was 7 (from prefix 06); non-normative, near end
+	"adversarial-verification": 80, // was 8 (from prefix 07); optional extension, last
 }
 
 // ---------------------------------------------------------------------------
