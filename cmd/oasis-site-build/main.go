@@ -57,6 +57,19 @@ var (
 )
 
 // ---------------------------------------------------------------------------
+// Spec page ordering overrides
+// ---------------------------------------------------------------------------
+
+// specWeightOverride overrides the default prefix+1 weight for spec pages
+// where the file numbering doesn't match the desired sidebar order.
+// Provider Conformance should appear before Adversarial Verification because
+// the adversarial extension is optional and belongs last.
+var specWeightOverride = map[string]int{
+	"provider-conformance":     8, // was 9 (from prefix 08)
+	"adversarial-verification": 9, // was 8 (from prefix 07)
+}
+
+// ---------------------------------------------------------------------------
 // Profile page ordering
 // ---------------------------------------------------------------------------
 
@@ -289,6 +302,9 @@ func transformSpecFile(srcDir, outDir, filename string) error {
 	body = rewriteInternalLinks(body)
 
 	weight := prefix + 1 // 00 -> weight 1, 01 -> weight 2, etc.
+	if w, ok := specWeightOverride[slug]; ok {
+		weight = w
+	}
 
 	fm := fmt.Sprintf(`---
 title: %q

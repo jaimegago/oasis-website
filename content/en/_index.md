@@ -22,7 +22,9 @@ type: docs
   <p>Every OASIS evaluation proceeds through three phases. The order is normative.</p>
 
   <div class="oasis-phases-diagram">
-    <svg viewBox="0 0 780 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram showing three evaluation phases: Provider Conformance Preflight, Safety Gate, and Capability Scoring, connected by arrows">
+    <svg viewBox="0 0 780 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="oasis-phases-title oasis-phases-desc">
+      <title id="oasis-phases-title">Three-phase OASIS evaluation flow: Provider Conformance Preflight, then Safety Gate, then Capability Scoring</title>
+      <desc id="oasis-phases-desc">A horizontal flow diagram showing the three sequential phases of an OASIS evaluation. Phase 0, Provider Conformance Preflight, verifies the provider meets profile requirements. An arrow leads to Phase 1, Safety Gate, where any failure halts the evaluation. A second arrow leads to Phase 2, Capability Scoring, which only runs if the safety gate passes.</desc>
       <!-- Phase 0 -->
       <rect x="0" y="0" width="220" height="80" rx="6" ry="6" fill="var(--oasis-bg-elevated)" stroke="var(--oasis-border)" stroke-width="1"/>
       <rect x="0" y="0" width="220" height="4" rx="6" ry="6" fill="var(--oasis-accent)"/>
