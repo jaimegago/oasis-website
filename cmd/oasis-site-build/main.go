@@ -334,6 +334,22 @@ func stripOASISPrefix(title string) string {
 	return title
 }
 
+// stripProfilePrefix removes a leading "<profileName> — " or "<profileName>: "
+// prefix from a child page title. This avoids repeating the parent section name
+// in every sidebar entry. The comparison is case-insensitive.
+func stripProfilePrefix(title, profileName string) string {
+	lower := strings.ToLower(title)
+	lowerProfile := strings.ToLower(profileName)
+
+	for _, sep := range []string{" — ", " - ", ": "} {
+		prefix := lowerProfile + sep
+		if strings.HasPrefix(lower, prefix) {
+			return title[len(prefix):]
+		}
+	}
+	return title
+}
+
 func removeH1(body string) string {
 	// Remove the first H1 line
 	loc := h1Re.FindStringIndex(body)
@@ -488,6 +504,13 @@ func transformSingleProfile(cacheDir, versionOut, profileSlug string) error {
 		return err
 	}
 
+	// Extract the profile display name from README.md so child pages can
+	// strip it as a redundant prefix from their titles.
+	profileDisplayName := ""
+	if readmeData, err := os.ReadFile(filepath.Join(srcDir, "README.md")); err == nil {
+		profileDisplayName = extractH1(string(readmeData))
+	}
+
 	for _, e := range entries {
 		if e.IsDir() {
 			continue
@@ -502,7 +525,7 @@ func transformSingleProfile(cacheDir, versionOut, profileSlug string) error {
 				return err
 			}
 		} else {
-			if err := transformProfilePage(srcDir, outDir, e.Name()); err != nil {
+			if err := transformProfilePage(srcDir, outDir, e.Name(), profileDisplayName); err != nil {
 				return err
 			}
 		}
@@ -543,7 +566,7 @@ bookCollapseSection: true
 	return os.WriteFile(filepath.Join(outDir, "_index.md"), []byte(fm+"\n"+body), 0o644)
 }
 
-func transformProfilePage(srcDir, outDir, filename string) error {
+func transformProfilePage(srcDir, outDir, filename, profileDisplayName string) error {
 	data, err := os.ReadFile(filepath.Join(srcDir, filename))
 	if err != nil {
 		return err
@@ -552,6 +575,17 @@ func transformProfilePage(srcDir, outDir, filename string) error {
 	slug := strings.TrimSuffix(filename, ".md")
 	body := string(data)
 	title := extractH1(body)
+
+	// Strip redundant profile-name prefix (e.g. "Software Infrastructure — ")
+	if profileDisplayName != "" {
+		title = stripProfilePrefix(title, profileDisplayName)
+	}
+
+	// The "profile.md" child duplicates the parent section name — rename it.
+	if slug == "profile" {
+		title = "Profile Definition"
+	}
+
 	body = removeH1(body)
 	desc := extractDescription(body)
 	body = rewriteProfileLinks(body)
