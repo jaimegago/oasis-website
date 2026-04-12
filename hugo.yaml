@@ -25,7 +25,7 @@ module:
     - path: github.com/alex-shpak/hugo-book
 
 params:
-  description: "OASIS v1.0.0-rc1 — an open standard for evaluating AI agents that operate in real-world systems. Feature-complete and validated end-to-end. Seeking feedback before v1.0.0 stability guarantees."
+  description: "An open standard for evaluating AI agents in real systems. Safety is a gate, not a score. v1.0.0-rc1 is out for review — feedback open."
   BookSearch: true
   BookTheme: auto
   BookToC: true

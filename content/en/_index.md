@@ -1,6 +1,5 @@
 ---
 title: "OASIS — Open Assessment Standard for Intelligent Systems"
-description: "OASIS v1.0.0-rc1 — an open standard for evaluating AI agents that operate in real-world systems. Feature-complete and validated end-to-end. Seeking feedback before v1.0.0 stability guarantees."
 type: docs
 ---
 
