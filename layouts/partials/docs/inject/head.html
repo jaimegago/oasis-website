@@ -1,5 +1,25 @@
 {{/* Custom head injections — favicon is handled via html-head-favicon override */}}
 
+{{/* Open Graph meta tags */}}
+{{- $title := .Title | default .Site.Title -}}
+{{- $description := .Description | default .Site.Params.description -}}
+{{- $image := printf "%s%s" .Site.BaseURL (.Site.Params.socialImage | default "og-image.png") -}}
+<meta property="og:title" content="{{ $title }}" />
+<meta property="og:description" content="{{ $description }}" />
+<meta property="og:type" content="{{ cond .IsHome "website" "article" }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+<meta property="og:image" content="{{ $image }}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name" content="OASIS" />
+<meta property="og:locale" content="en_US" />
+
+{{/* Twitter Card meta tags */}}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{{ $title }}" />
+<meta name="twitter:description" content="{{ $description }}" />
+<meta name="twitter:image" content="{{ $image }}" />
+
 {{/* DocSearch v4 — CSS and preconnect */}}
 {{ if default true .Site.Params.BookSearch }}
 <link rel="preconnect" href="https://{{ .Site.Params.algolia.appId }}-dsn.algolia.net" crossorigin />

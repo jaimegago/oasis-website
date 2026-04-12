@@ -33,6 +33,9 @@ params:
   BookRepo: https://github.com/jaimegago/oasis-website
   BookEditPath: edit/main
 
+  # Open Graph / Twitter Card social image (relative to static/)
+  socialImage: og-image.png
+
   # Algolia DocSearch v4 — replace placeholder values with credentials from
   # https://dashboard.algolia.com after DocSearch approval.
   # In CI, these can be overridden via environment variables or repository secrets.
