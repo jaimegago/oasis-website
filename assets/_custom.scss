@@ -717,6 +717,15 @@ input[type="submit"] {
   border-radius: var(--radius-sm);
 }
 
+// Hide the keyboard-shortcut indicator in the sidebar at all viewport sizes —
+// DocSearch only hides it below 768px by default, but at our sidebar width the
+// ⌘K keys overflow into the right border. The Cmd+K shortcut itself is bound
+// by DocSearch's JS and keeps working without the visible element. Scoped to
+// .book-search so any key indicators inside the modal are unaffected.
+.book-search .DocSearch-Button-Keys {
+  display: none;
+}
+
 // Modal overrides
 .DocSearch-Modal {
   border-radius: var(--radius-lg);
