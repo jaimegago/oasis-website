@@ -687,7 +687,7 @@ input[type="submit"] {
   margin-bottom: var(--space-4);
 }
 
-.DocSearch-Button {
+.book-search .DocSearch-Button {
   width: 100%;
   margin: 0;
   border: 1px solid var(--oasis-border);
@@ -703,15 +703,15 @@ input[type="submit"] {
   }
 }
 
-.DocSearch-Button-Placeholder {
+.book-search .DocSearch-Button-Placeholder {
   font-size: 0.875rem;
 }
 
-.DocSearch-Button-Keys {
+.book-search .DocSearch-Button-Keys {
   min-width: auto;
 }
 
-.DocSearch-Button-Key {
+.book-search .DocSearch-Button-Key {
   font-size: 0.75rem;
   padding: 0 var(--space-1);
   border-radius: var(--radius-sm);
