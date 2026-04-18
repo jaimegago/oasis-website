@@ -691,6 +691,7 @@ input[type="submit"] {
   width: 100%;
   max-width: none;
   margin: 0;
+  box-sizing: border-box;
   border: 1px solid var(--oasis-border);
   border-radius: var(--radius-md);
   background: var(--oasis-bg-elevated);
