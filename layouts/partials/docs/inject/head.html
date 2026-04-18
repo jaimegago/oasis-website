@@ -26,5 +26,5 @@
 {{/* DocSearch v4 — CSS and preconnect */}}
 {{ if default true .Site.Params.BookSearch }}
 <link rel="preconnect" href="https://{{ .Site.Params.algolia.appId }}-dsn.algolia.net" crossorigin />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@4.0.6/dist/style.min.css" integrity="{{ .Site.Params.algolia.cssSRI | default "" }}" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@4.6.2/dist/style.min.css" crossorigin="anonymous" />
 {{ end }}
