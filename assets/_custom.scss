@@ -689,6 +689,7 @@ input[type="submit"] {
 
 .book-search .DocSearch-Button {
   width: 100%;
+  max-width: none;
   margin: 0;
   border: 1px solid var(--oasis-border);
   border-radius: var(--radius-md);
