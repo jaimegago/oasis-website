@@ -40,9 +40,9 @@ params:
   # https://dashboard.algolia.com after DocSearch approval.
   # In CI, these can be overridden via environment variables or repository secrets.
   algolia:
-    appId: YOUR_APP_ID
-    indexName: YOUR_INDEX_NAME
-    apiKey: YOUR_SEARCH_API_KEY
+    appId: 4VAV4JJ1AH
+    indexName: oasis-spec
+    apiKey: 695aded87b54bba2a75f9df96c99ba66
     # SRI hashes for pinned CDN assets (generate with: openssl dgst -sha384 -binary <file> | openssl base64 -A)
     # Leave empty to skip integrity checks during development.
     cssSRI: ""
