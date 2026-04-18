@@ -25,7 +25,7 @@ type: docs
   <p>Every OASIS evaluation proceeds through three phases. The order is normative.</p>
 
   <div class="oasis-phases-diagram">
-    <svg viewBox="0 0 780 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="oasis-phases-title oasis-phases-desc">
+    <svg viewBox="0 0 780 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="oasis-phases-title oasis-phases-desc">
       <title id="oasis-phases-title">Three-phase OASIS evaluation flow: Provider Conformance Preflight, then Safety Gate, then Capability Scoring</title>
       <desc id="oasis-phases-desc">A horizontal flow diagram showing the three sequential phases of an OASIS evaluation. Phase 0, Provider Conformance Preflight, verifies the provider meets profile requirements. An arrow leads to Phase 1, Safety Gate, where any failure halts the evaluation. A second arrow leads to Phase 2, Capability Scoring, which only runs if the safety gate passes.</desc>
       <!-- Phase 0 -->
@@ -33,7 +33,7 @@ type: docs
       <rect x="0" y="0" width="220" height="4" rx="6" ry="6" fill="var(--oasis-accent)"/>
       <text x="110" y="45" text-anchor="middle" fill="var(--oasis-text)" font-size="14" font-weight="600" font-family="IBM Plex Sans, sans-serif">Provider Conformance</text>
       <text x="110" y="65" text-anchor="middle" fill="var(--oasis-text)" font-size="14" font-weight="600" font-family="IBM Plex Sans, sans-serif">Preflight</text>
-      <text x="110" y="100" text-anchor="middle" fill="var(--oasis-text-secondary)" font-size="12" font-family="IBM Plex Sans, sans-serif">Verify provider meets profile requirements</text>
+      <text x="110" y="100" text-anchor="middle" fill="var(--oasis-text-secondary)" font-size="12" font-family="IBM Plex Sans, sans-serif"><tspan x="110" dy="0">Verify provider meets</tspan><tspan x="110" dy="1.1em">profile requirements</tspan></text>
       <!-- Arrow 1 -->
       <line x1="230" y1="40" x2="268" y2="40" stroke="var(--oasis-text-tertiary)" stroke-width="2"/>
       <polygon points="268,35 278,40 268,45" fill="var(--oasis-text-tertiary)"/>
@@ -41,7 +41,7 @@ type: docs
       <rect x="280" y="0" width="220" height="80" rx="6" ry="6" fill="var(--oasis-bg-elevated)" stroke="var(--oasis-border)" stroke-width="1"/>
       <rect x="280" y="0" width="220" height="4" rx="6" ry="6" fill="var(--oasis-accent)"/>
       <text x="390" y="50" text-anchor="middle" fill="var(--oasis-text)" font-size="14" font-weight="600" font-family="IBM Plex Sans, sans-serif">Safety Gate</text>
-      <text x="390" y="100" text-anchor="middle" fill="var(--oasis-text-secondary)" font-size="12" font-family="IBM Plex Sans, sans-serif">Any failure halts the evaluation</text>
+      <text x="390" y="100" text-anchor="middle" fill="var(--oasis-text-secondary)" font-size="12" font-family="IBM Plex Sans, sans-serif"><tspan x="390" dy="0">Any failure halts</tspan><tspan x="390" dy="1.1em">the evaluation</tspan></text>
       <!-- Arrow 2 -->
       <line x1="510" y1="40" x2="548" y2="40" stroke="var(--oasis-text-tertiary)" stroke-width="2"/>
       <polygon points="548,35 558,40 548,45" fill="var(--oasis-text-tertiary)"/>
@@ -49,7 +49,7 @@ type: docs
       <rect x="560" y="0" width="220" height="80" rx="6" ry="6" fill="var(--oasis-bg-elevated)" stroke="var(--oasis-border)" stroke-width="1"/>
       <rect x="560" y="0" width="220" height="4" rx="6" ry="6" fill="var(--oasis-accent)"/>
       <text x="670" y="50" text-anchor="middle" fill="var(--oasis-text)" font-size="14" font-weight="600" font-family="IBM Plex Sans, sans-serif">Capability Scoring</text>
-      <text x="670" y="100" text-anchor="middle" fill="var(--oasis-text-secondary)" font-size="12" font-family="IBM Plex Sans, sans-serif">Only runs if the safety gate passes</text>
+      <text x="670" y="100" text-anchor="middle" fill="var(--oasis-text-secondary)" font-size="12" font-family="IBM Plex Sans, sans-serif"><tspan x="670" dy="0">Only runs if the</tspan><tspan x="670" dy="1.1em">safety gate passes</tspan></text>
     </svg>
   </div>
 
