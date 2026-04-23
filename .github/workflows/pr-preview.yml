@@ -41,6 +41,14 @@ jobs:
 
       - name: Build site with Hugo
         run: hugo --minify
+        env:
+          # Mirrors deploy.yml so preview builds render real DocSearch. PRs
+          # from forks will not receive these secrets; the fallback
+          # placeholders in hugo.yaml keep the build succeeding (search UI
+          # renders but will not return hits against fake credentials).
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
 
       - name: Upload preview artifact
         uses: actions/upload-artifact@v4

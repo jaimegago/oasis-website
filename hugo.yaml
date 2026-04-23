@@ -24,9 +24,22 @@ module:
   imports:
     - path: github.com/alex-shpak/hugo-book
 
+# Allow the DocSearch inject partials to read Algolia credentials from
+# env vars. Hugo's default getenv policy only permits HUGO_* and CI.
+security:
+  funcs:
+    getenv:
+      - ^HUGO_
+      - ^CI$
+      - ^ALGOLIA_
+
 params:
   description: "An open standard for evaluating AI agents in real systems. Safety is a gate, not a score. v1.0.0-rc1 is out for review — feedback open."
-  BookSearch: true
+  # Hugo Book's built-in Fuse.js search is disabled because we use Algolia
+  # DocSearch v4 instead (see the `algolia` block below and the inject
+  # partials under layouts/partials/docs/inject/). Keeping this false avoids
+  # generating a ~465KB search-data JSON per build that nothing loads.
+  BookSearch: false
   BookTheme: auto
   BookToC: true
   BookSection: docs
@@ -36,10 +49,13 @@ params:
   # Open Graph / Twitter Card social image (relative to static/)
   socialImage: og-image.png
 
-  # Algolia DocSearch v4 — replace placeholder values with credentials from
-  # https://dashboard.algolia.com after DocSearch approval.
-  # In CI, these can be overridden via environment variables or repository secrets.
+  # Algolia DocSearch v4 — real credentials are injected at build time from
+  # GitHub Actions secrets (ALGOLIA_APP_ID, ALGOLIA_INDEX_NAME, ALGOLIA_API_KEY).
+  # The inject partials prefer those env vars and fall back to the values below,
+  # which are placeholders for local development only. The DocSearch apiKey is
+  # a search-only public key (embedded in page HTML by design); these values
+  # live outside source control purely for hygiene and rotation, not secrecy.
   algolia:
-    appId: 4VAV4JJ1AH
-    indexName: oasis-spec
-    apiKey: 695aded87b54bba2a75f9df96c99ba66
+    appId: PLACEHOLDER_APP_ID
+    indexName: PLACEHOLDER_INDEX_NAME
+    apiKey: PLACEHOLDER_API_KEY

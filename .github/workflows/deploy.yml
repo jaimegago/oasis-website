@@ -52,6 +52,14 @@ jobs:
 
       - name: Build site with Hugo
         run: hugo --minify
+        env:
+          # Algolia DocSearch credentials are read by the inject partials
+          # under layouts/partials/docs/inject/. Search-only apiKey is
+          # public-by-design; secrets used here so rotation is a config
+          # change rather than a commit.
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

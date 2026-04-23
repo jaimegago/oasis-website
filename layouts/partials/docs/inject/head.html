@@ -23,8 +23,9 @@
 <meta name="twitter:description" content="{{ $description }}" />
 <meta name="twitter:image" content="{{ $image }}" />
 
-{{/* DocSearch v4 — CSS and preconnect */}}
-{{ if default true .Site.Params.BookSearch }}
-<link rel="preconnect" href="https://{{ .Site.Params.algolia.appId }}-dsn.algolia.net" crossorigin />
+{{/* DocSearch v4 — CSS and preconnect.
+     appId comes from $ALGOLIA_APP_ID at build time (CI), falling back to
+     .Site.Params.algolia.appId for local dev. */}}
+{{- $appId := or (os.Getenv "ALGOLIA_APP_ID") .Site.Params.algolia.appId -}}
+<link rel="preconnect" href="https://{{ $appId }}-dsn.algolia.net" crossorigin />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@4.6.2/dist/style.min.css" crossorigin="anonymous" />
-{{ end }}

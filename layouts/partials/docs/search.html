@@ -1,6 +1,6 @@
-{{/* DocSearch v4 — replaces Hugo Book's built-in FlexSearch */}}
-{{ if default true .Site.Params.BookSearch }}
+{{/* DocSearch v4 container — replaces Hugo Book's built-in Fuse.js search.
+     Rendered unconditionally: this override is the site's search, not an
+     addition to it, so it must not be gated on `BookSearch`. */}}
 <div class="book-search">
   <div id="docsearch"></div>
 </div>
-{{ end }}

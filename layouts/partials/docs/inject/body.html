@@ -1,12 +1,16 @@
-{{/* DocSearch v4 — JavaScript initialization */}}
-{{ if default true .Site.Params.BookSearch }}
+{{/* DocSearch v4 — JavaScript initialization.
+     Credentials come from $ALGOLIA_APP_ID / $ALGOLIA_INDEX_NAME /
+     $ALGOLIA_API_KEY at build time (GitHub Actions secrets), falling back to
+     the placeholder values in hugo.yaml for local dev. */}}
+{{- $appId := or (os.Getenv "ALGOLIA_APP_ID") .Site.Params.algolia.appId -}}
+{{- $indexName := or (os.Getenv "ALGOLIA_INDEX_NAME") .Site.Params.algolia.indexName -}}
+{{- $apiKey := or (os.Getenv "ALGOLIA_API_KEY") .Site.Params.algolia.apiKey -}}
 <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@4.6.2/dist/umd/index.min.js" crossorigin="anonymous"></script>
 <script>
   docsearch({
     container: '#docsearch',
-    appId: '{{ .Site.Params.algolia.appId }}',
-    indexName: '{{ .Site.Params.algolia.indexName }}',
-    apiKey: '{{ .Site.Params.algolia.apiKey }}',
+    appId: '{{ $appId }}',
+    indexName: '{{ $indexName }}',
+    apiKey: '{{ $apiKey }}',
   });
 </script>
-{{ end }}

@@ -150,20 +150,34 @@ All visual identity styles live in `assets/_custom.scss`. This is Hugo Book's do
 
 ## Search
 
-The site uses **Algolia DocSearch v4** for search, replacing Hugo Book's built-in FlexSearch. DocSearch is a free hosted search service for open-source documentation.
+The site uses **Algolia DocSearch v4** for search. Hugo Book's built-in Fuse.js search is disabled.
 
 ### How it works
 
-- The search partial is overridden at `layouts/partials/docs/search.html` — it renders a `#docsearch` container instead of the theme's FlexSearch input.
-- DocSearch CSS is loaded via `layouts/partials/docs/inject/head.html`.
+- `params.BookSearch` is set to `false` in `hugo.yaml`. This stops the theme from generating its Fuse.js index (otherwise emitted as `public/en.search-data.min.*.json` and `public/en.search.min.*.js`). The theme's `static/fuse.min.js` still ships to `public/` because Hugo's static pipeline isn't gated by `BookSearch` — it is unreferenced and harmless.
+- The search partial is overridden at `layouts/partials/docs/search.html` — it renders a `#docsearch` container unconditionally. The override does **not** read `BookSearch` (if it did, disabling Fuse would also hide DocSearch).
+- DocSearch CSS and the Algolia preconnect are loaded via `layouts/partials/docs/inject/head.html`.
 - DocSearch JS is loaded and initialized via `layouts/partials/docs/inject/body.html`.
-- Algolia credentials (Application ID, Index Name, Search-Only API Key) are configured in `hugo.yaml` under `params.algolia`.
 - DocSearch's CSS variables are mapped to OASIS design tokens in `assets/_custom.scss` section 13.
 
 ### Credentials
 
-The `params.algolia` block in `hugo.yaml` contains placeholder values. Replace them with real credentials from the Algolia dashboard after DocSearch approval. For CI/CD, these values can be injected via environment variables or repository secrets — do not commit production API keys.
+The DocSearch `apiKey` is a **search-only public key** — it is embedded in every page's HTML by design. It is kept out of source control for hygiene and rotation, not secrecy. Treating the value as a secret lets us rotate it by editing repo settings rather than committing a new config.
+
+At build time, the inject partials read credentials from three environment variables, falling back to the placeholder values in `hugo.yaml`'s `params.algolia` block if the env vars are unset:
+
+| Env var | Maps to |
+|---|---|
+| `ALGOLIA_APP_ID` | `params.algolia.appId` |
+| `ALGOLIA_INDEX_NAME` | `params.algolia.indexName` |
+| `ALGOLIA_API_KEY` | `params.algolia.apiKey` |
+
+In GitHub Actions, `deploy.yml` and `pr-preview.yml` inject these from repository secrets named `ALGOLIA_APP_ID`, `ALGOLIA_INDEX_NAME`, `ALGOLIA_API_KEY` on the Hugo build step. `lint.yml` runs `hugo --renderToMemory` without the env vars — the placeholder fallback is enough to verify compilation.
+
+Hugo's default security policy only whitelists `HUGO_*` and `CI` for `os.Getenv`. `hugo.yaml` extends `security.funcs.getenv` with `^ALGOLIA_` so the inject partials can read these vars.
+
+For local development: `hugo serve` without env vars renders the search UI with placeholder credentials — the input appears but returns no hits. To test real search locally, run `ALGOLIA_APP_ID=... ALGOLIA_INDEX_NAME=... ALGOLIA_API_KEY=... hugo serve`.
 
 ### CDN version pinning
 
-DocSearch JS and CSS are loaded from `cdn.jsdelivr.net` with pinned version numbers (currently `@4.0.6`). When upgrading, update both the `head.html` and `body.html` inject partials and regenerate SRI hashes.
+DocSearch JS and CSS are loaded from `cdn.jsdelivr.net` with pinned version numbers (currently `@4.6.2`). When upgrading, update both the `head.html` and `body.html` inject partials.
