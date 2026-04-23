@@ -16,6 +16,7 @@ _vendor/
 # Generated content (rebuilt by oasis-site-build)
 content/en/docs/
 data/versions.yaml
+static/docs/
 
 # OS files
 .DS_Store

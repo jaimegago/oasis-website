@@ -51,6 +51,7 @@ type VersionManifestEntry struct {
 var (
 	flagConfig   = flag.String("config", "./versions.yaml", "path to versions.yaml")
 	flagOutput   = flag.String("output", "./content/en/docs", "content output directory")
+	flagStatic   = flag.String("static", "./static", "Hugo static output directory")
 	flagCache    = flag.String("cache", "./.cache/oasis-spec", "clone cache directory")
 	flagSpecRepo = flag.String("spec-repo", "https://github.com/jaimegago/oasis-spec.git", "spec repository URL")
 	flagClean    = flag.Bool("clean", false, "remove output directory before building")
@@ -128,7 +129,7 @@ func main() {
 		}
 
 		// Stage 3: Profile transformation
-		if err := transformProfiles(cacheDir, versionOut); err != nil {
+		if err := transformProfiles(cacheDir, versionOut, v.Version, *flagStatic); err != nil {
 			log.Fatalf("transform profiles %s: %v", v.Version, err)
 		}
 
@@ -480,7 +481,7 @@ func rewriteInternalLinks(body string) string {
 // Stage 3: Profile transformation
 // ---------------------------------------------------------------------------
 
-func transformProfiles(cacheDir, versionOut string) error {
+func transformProfiles(cacheDir, versionOut, versionSlug, staticDir string) error {
 	profilesDir := filepath.Join(cacheDir, "profiles")
 	if _, err := os.Stat(profilesDir); os.IsNotExist(err) {
 		log.Printf("  no profiles directory, skipping")
@@ -516,14 +517,14 @@ Domain profiles define how OASIS applies to specific operational environments.
 			continue
 		}
 		profileSlug := e.Name()
-		if err := transformSingleProfile(cacheDir, versionOut, profileSlug); err != nil {
+		if err := transformSingleProfile(cacheDir, versionOut, versionSlug, staticDir, profileSlug); err != nil {
 			return fmt.Errorf("profile %s: %w", profileSlug, err)
 		}
 	}
 	return nil
 }
 
-func transformSingleProfile(cacheDir, versionOut, profileSlug string) error {
+func transformSingleProfile(cacheDir, versionOut, versionSlug, staticDir, profileSlug string) error {
 	srcDir := filepath.Join(cacheDir, "profiles", profileSlug)
 	outDir := filepath.Join(versionOut, "profiles", profileSlug)
 	if err := os.MkdirAll(outDir, 0o755); err != nil {
@@ -551,14 +552,20 @@ func transformSingleProfile(cacheDir, versionOut, profileSlug string) error {
 
 		if strings.EqualFold(e.Name(), "README.md") {
 			// README becomes _index.md
-			if err := transformProfileIndex(srcDir, outDir); err != nil {
+			if err := transformProfileIndex(srcDir, outDir, versionSlug, profileSlug); err != nil {
 				return err
 			}
 		} else {
-			if err := transformProfilePage(srcDir, outDir, e.Name(), profileDisplayName); err != nil {
+			if err := transformProfilePage(srcDir, outDir, e.Name(), profileDisplayName, versionSlug, profileSlug); err != nil {
 				return err
 			}
 		}
+	}
+
+	// Copy profile-level .yaml artifacts (e.g. provider-conformance-requirements.yaml)
+	// to the Hugo static tree so they are served at a stable canonical URL.
+	if err := copyProfileYAMLs(srcDir, staticDir, versionSlug, profileSlug); err != nil {
+		return fmt.Errorf("copy yaml artifacts: %w", err)
 	}
 
 	// Stage 4: Scenarios
@@ -572,7 +579,7 @@ func transformSingleProfile(cacheDir, versionOut, profileSlug string) error {
 	return nil
 }
 
-func transformProfileIndex(srcDir, outDir string) error {
+func transformProfileIndex(srcDir, outDir, versionSlug, profileSlug string) error {
 	data, err := os.ReadFile(filepath.Join(srcDir, "README.md"))
 	if err != nil {
 		return err
@@ -583,6 +590,7 @@ func transformProfileIndex(srcDir, outDir string) error {
 	body = removeH1(body)
 	desc := extractDescription(body)
 	body = rewriteProfileLinks(body)
+	body = rewriteProfileYAMLLinks(body, versionSlug, profileSlug)
 
 	fm := fmt.Sprintf(`---
 title: %q
@@ -596,7 +604,7 @@ bookCollapseSection: true
 	return os.WriteFile(filepath.Join(outDir, "_index.md"), []byte(fm+"\n"+body), 0o644)
 }
 
-func transformProfilePage(srcDir, outDir, filename, profileDisplayName string) error {
+func transformProfilePage(srcDir, outDir, filename, profileDisplayName, versionSlug, profileSlug string) error {
 	data, err := os.ReadFile(filepath.Join(srcDir, filename))
 	if err != nil {
 		return err
@@ -619,6 +627,7 @@ func transformProfilePage(srcDir, outDir, filename, profileDisplayName string) e
 	body = removeH1(body)
 	desc := extractDescription(body)
 	body = rewriteProfileLinks(body)
+	body = rewriteProfileYAMLLinks(body, versionSlug, profileSlug)
 
 	weight := 10 // default
 	if w, ok := profilePageOrder[slug]; ok {
@@ -634,6 +643,67 @@ type: docs
 `, title, weight, desc)
 
 	return os.WriteFile(filepath.Join(outDir, slug+".md"), []byte(fm+"\n"+body), 0o644)
+}
+
+// profileYAMLLinkRe matches [text](filename.yaml) same-directory relative links
+// (no slashes, no scheme) within profile markdown.
+var profileYAMLLinkRe = regexp.MustCompile(`\[([^\]]+)\]\(([a-zA-Z0-9_-]+)\.yaml\)`)
+
+// rewriteProfileYAMLLinks turns same-directory .yaml links into absolute URLs
+// pointing at the canonical static-tree location. Relative links only resolve
+// correctly from the profile's _index page because Hugo's pretty URL scheme
+// renders child pages at /…/<slug>/ — a same-directory .yaml reference from
+// those pages resolves under the wrong subdirectory. Absolute URLs sidestep
+// that by pinning the target regardless of the page's rendered URL.
+func rewriteProfileYAMLLinks(body, versionSlug, profileSlug string) string {
+	return profileYAMLLinkRe.ReplaceAllStringFunc(body, func(match string) string {
+		m := profileYAMLLinkRe.FindStringSubmatch(match)
+		if len(m) < 3 {
+			return match
+		}
+		text := m[1]
+		target := m[2]
+		return fmt.Sprintf(`[%s](/docs/%s/profiles/%s/%s.yaml)`, text, versionSlug, profileSlug, target)
+	})
+}
+
+// copyProfileYAMLs discovers .yaml files at the profile source root (no
+// recursion into subdirectories like examples/ or scenarios/) and copies each
+// byte-for-byte into the Hugo static tree at
+// static/docs/<versionSlug>/profiles/<profileSlug>/<filename>.yaml. Existing
+// files at the destination are overwritten. Subdirectory YAML (scenario data)
+// is intentionally skipped — only profile-level artifacts are mirrored.
+func copyProfileYAMLs(srcDir, staticDir, versionSlug, profileSlug string) error {
+	entries, err := os.ReadDir(srcDir)
+	if err != nil {
+		return err
+	}
+
+	destDir := filepath.Join(staticDir, "docs", versionSlug, "profiles", profileSlug)
+	var dirReady bool
+
+	for _, e := range entries {
+		if e.IsDir() || !strings.HasSuffix(e.Name(), ".yaml") {
+			continue
+		}
+		if !dirReady {
+			if err := os.MkdirAll(destDir, 0o755); err != nil {
+				return err
+			}
+			dirReady = true
+		}
+		srcPath := filepath.Join(srcDir, e.Name())
+		dstPath := filepath.Join(destDir, e.Name())
+		data, err := os.ReadFile(srcPath)
+		if err != nil {
+			return fmt.Errorf("read %s: %w", srcPath, err)
+		}
+		if err := os.WriteFile(dstPath, data, 0o644); err != nil {
+			return fmt.Errorf("write %s: %w", dstPath, err)
+		}
+		log.Printf("  copied %s -> %s", e.Name(), dstPath)
+	}
+	return nil
 }
 
 // profileLinkRe matches [text](filename.md) style links within profile docs.
