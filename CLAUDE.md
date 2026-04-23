@@ -160,6 +160,10 @@ The site uses **Algolia DocSearch v4** for search. Hugo Book's built-in Fuse.js 
 - DocSearch JS is loaded and initialized via `layouts/partials/docs/inject/body.html`.
 - DocSearch's CSS variables are mapped to OASIS design tokens in `assets/_custom.scss` section 13.
 
+### Constraint: DocSearch overrides must stay independent of `BookSearch`
+
+The three DocSearch override files — `layouts/partials/docs/search.html`, `layouts/partials/docs/inject/head.html`, and `layouts/partials/docs/inject/body.html` — must not gate any of their output on `params.BookSearch`. The `BookSearch` flag governs the theme's Fuse.js index and default search UI only; because we intentionally keep it `false`, any conditional that ties DocSearch rendering to `BookSearch` will silently disable search on the live site. Adding `{{ if .Site.Params.BookSearch }}` (or equivalent) around the DocSearch container, CSS, or JS is a regression, not a refactor.
+
 ### Credentials
 
 The DocSearch `apiKey` is a **search-only public key** — it is embedded in every page's HTML by design. It is kept out of source control for hygiene and rotation, not secrecy. Treating the value as a secret lets us rotate it by editing repo settings rather than committing a new config.
