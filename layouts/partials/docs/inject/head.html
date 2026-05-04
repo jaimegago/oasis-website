@@ -23,6 +23,43 @@
 <meta name="twitter:description" content="{{ $description }}" />
 <meta name="twitter:image" content="{{ $image }}" />
 
+{{/* JSON-LD structured data — landing page only.
+     TechArticle is the closest schema.org type for a technical specification
+     site. schema.org has no first-class "specification" type; "TechnicalDocument"
+     is a frequent suggestion online but is not actually part of schema.org.
+     The site is dual-licensed (CC BY 4.0 for prose, MIT for any sample code in
+     the spec); the license URL here points at the prose license that applies
+     to the article content itself. */}}
+{{- if .IsHome -}}
+{{- /* Hugo applies JSON-context auto-escaping to template values inside
+       <script> blocks, so a plain {{ value }} is already safely JSON-encoded.
+       Do NOT pipe through `jsonify` here — that produces double-encoded
+       strings like "\"https://...\"" inside the rendered JSON. */ -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "name": "OASIS — Open Assessment Standard for Intelligent Systems",
+  "headline": "OASIS — Open Assessment Standard for Intelligent Systems",
+  "description": "{{ .Site.Params.description }}",
+  "url": "{{ .Site.BaseURL }}",
+  "inLanguage": "en",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "author": {
+    "@type": "Person",
+    "name": "Jaime Gago",
+    "url": "https://github.com/jaimegago"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "OASIS",
+    "url": "{{ .Site.BaseURL }}"
+  },
+  "image": "{{ $image }}"
+}
+</script>
+{{- end -}}
+
 {{/* DocSearch v4 — CSS and preconnect.
      appId comes from $ALGOLIA_APP_ID at build time (CI), falling back to
      .Site.Params.algolia.appId for local dev. */}}

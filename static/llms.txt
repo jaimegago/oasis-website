@@ -1,0 +1,33 @@
+# OASIS — Open Assessment Standard for Intelligent Systems
+
+> OASIS is an open standard for evaluating AI agents that operate in real-world systems. It defines how to test whether an agent is safe to deploy and how capable it is — in that order. Safety is a gate, not a score: an agent that fails any safety scenario receives no capability score at all.
+
+The specification is split across nine documents (seven normative, two non-normative) and is applied to specific operational environments through domain profiles. The first profile is Software Infrastructure, covering AI agents that act on production infrastructure (Kubernetes, cloud providers, observability stacks). For a complete machine-readable concatenation of the current default-version specification, fetch [/spec.md](https://oasis-spec.dev/spec.md).
+
+## Specification
+
+- [Motivation](https://oasis-spec.dev/docs/v1.0/spec/motivation/): Explains why OASIS exists, the gap it fills relative to existing AI benchmarks, and the design choices that follow from refusing to blend safety into capability.
+- [Core](https://oasis-spec.dev/docs/v1.0/spec/core/): Defines the foundational concepts — the three-phase evaluation model (preflight, safety gate, capability scoring), capability scoring rules, complexity tiers, and the architecture every conformant evaluation must follow.
+- [Scenarios](https://oasis-spec.dev/docs/v1.0/spec/scenarios/): Specifies the YAML schema for evaluation scenarios — fields for stimuli, must/must-not behavior assertions, scoring type, classification, archetype, and tier — plus the rules for grouping scenarios into suites.
+- [Profiles](https://oasis-spec.dev/docs/v1.0/spec/profiles/): Defines the structure of a domain profile (safety categories, capability categories, behavior definitions, interface types, stimulus library, provider conformance contract) and the quality criteria a profile must meet to be considered complete.
+- [Execution](https://oasis-spec.dev/docs/v1.0/spec/execution/): Specifies the agent interface contract, the environment model, how stimuli are delivered, how observations are captured, and how the runner sequences scenarios across the three phases.
+- [Reporting & Conformance](https://oasis-spec.dev/docs/v1.0/spec/reporting/): Defines the verdict format (PASS, FAIL, INDETERMINATE, NOT_RUN), the structured report schema, and the rules for what a conformant report must contain.
+- [Design Principles](https://oasis-spec.dev/docs/v1.0/spec/principles/): Non-normative. Articulates the principles the standard rests on — safety as a gate not a score, deterministic verdicts, profile-domain separation, independent verification, runtime conformance.
+- [Adversarial Verification](https://oasis-spec.dev/docs/v1.0/spec/adversarial-verification/): Optional extension defining how non-deterministic adversarial testing layers on top of the deterministic core, including how adversarial findings interact with the safety gate.
+- [Provider Conformance](https://oasis-spec.dev/docs/v1.0/spec/provider-conformance/): Specifies the runtime contract evaluation providers must meet — the conformance endpoint, declared requirements, and how the runner's preflight check validates a provider before any scenario executes.
+
+## Profiles
+
+- [Software Infrastructure](https://oasis-spec.dev/docs/v1.0/profiles/software-infrastructure/): The first OASIS domain profile. Defines safe and capable behavior for AI agents operating on production infrastructure — 7 safety categories (21 scenario archetypes covering credential handling, blast radius, destructive operations, prompt injection, state corruption, etc.) and 7 capability categories (30 archetypes covering observability, diagnosis, multi-step orchestration, escalation judgment).
+
+## Reference
+
+- [Design Decisions](https://oasis-spec.dev/docs/decisions/): Living record of the architectural choices and trade-offs that shaped OASIS. Unversioned, updated as the spec evolves.
+
+## Tools
+
+- [oasisctl](https://github.com/jaimegago/oasisctl): Reference evaluation runner. Drives the three-phase evaluation against any OASIS-conformant provider, for any profile. Implements the contract defined in Provider Conformance.
+
+## Reference evaluations
+
+- [Joe — Software Infrastructure v0.2](https://oasis-spec.dev/evaluations/joe/): Full report from running the SI profile against Joe, a Kubernetes-operating AI agent. Result: 8/21 — evaluation FAILED (safety gate). First end-to-end real-agent validation of the OASIS pipeline.

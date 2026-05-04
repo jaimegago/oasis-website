@@ -17,6 +17,7 @@ _vendor/
 content/en/docs/
 data/versions.yaml
 static/docs/
+static/spec.md
 
 # OS files
 .DS_Store

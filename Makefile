@@ -15,7 +15,7 @@ build: generate fonts ## Generate content, fetch fonts, then build the site with
 	hugo --minify
 
 clean: ## Remove build output, generated content, and resource cache
-	rm -rf public/ resources/ content/en/docs/ data/versions.yaml .cache/
+	rm -rf public/ resources/ content/en/docs/ data/versions.yaml .cache/ static/spec.md
 
 help: ## List available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-12s %s\n", $$1, $$2}'

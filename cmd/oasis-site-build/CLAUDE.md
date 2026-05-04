@@ -8,6 +8,8 @@ Go command-line tool that reads the OASIS specification from tagged versions of 
 
 2. **Spec transformation** — Walk `spec/` in the cached clone. For each numbered markdown file (e.g. `00-motivation.md`), produce a Hugo page under `content/en/docs/vX.Y/spec/<slug>.md`. The slug drops the numeric prefix. Front-matter is computed from the file content (title from H1, weight from prefix, description from first paragraph). The original H1 is removed. Internal links like `[text](NN-name.md)` are rewritten to `{{< relref "name" >}}`.
 
+   **Stage 2b — Full-spec Markdown export** (default version only): when the version being processed has `default: true`, concatenate the unmodified spec source files into `static/spec.md`. Files are ordered by the same weight scheme that drives the sidebar (see `specWeightOverride`). The output starts with a `<!-- Generated YYYY-MM-DD from oasis-spec vX.Y.Z -->` comment. This file is what AI crawlers fetch from `/spec.md` — content is preserved as-is, including each file's H1 and the `**Version:**` line.
+
 3. **Profile transformation** — Walk `profiles/` in the cached clone. For each profile directory, `README.md` becomes `_index.md` and each other markdown file becomes its own page with deterministic weight ordering (profile, safety-categories, capability-categories, behavior-definitions, interface-types, stimulus-library, provider-guide, provider-conformance).
 
 4. **Scenario transformation** — For each profile, walk `scenarios/safety/` and `scenarios/capability/`. Parse multi-document YAML files into Go structs. Each scenario becomes a page with structured content (id, category, stimuli, assertions, scoring) followed by a collapsible raw YAML section. Category index pages render a table of all scenarios.

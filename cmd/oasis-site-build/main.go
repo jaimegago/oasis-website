@@ -12,6 +12,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -127,6 +128,18 @@ func main() {
 		// Stage 2: Spec transformation
 		if err := transformSpec(cacheDir, versionOut); err != nil {
 			log.Fatalf("transform spec %s: %v", v.Version, err)
+		}
+
+		// Stage 2b: Full-spec Markdown export (default version only).
+		// Concatenates the unmodified spec source files into static/spec.md
+		// for AI-crawler consumption. Only the default version is exported —
+		// the file lives at /spec.md (no version segment) and represents the
+		// version the live site shows by default. See writeFullSpec for the
+		// version-selection rationale.
+		if v.Default {
+			if err := writeFullSpec(cacheDir, *flagStatic, v); err != nil {
+				log.Fatalf("write full spec %s: %v", v.Version, err)
+			}
 		}
 
 		// Stage 3: Profile transformation
@@ -481,6 +494,101 @@ func rewriteInternalLinks(body string) string {
 		}
 		return fmt.Sprintf(`[%s]({{< relref "%s" >}})`, text, slug)
 	})
+}
+
+// ---------------------------------------------------------------------------
+// Stage 2b: Full-spec Markdown export
+// ---------------------------------------------------------------------------
+
+// writeFullSpec concatenates every spec file from the cached source tree into
+// a single static/spec.md served at the stable URL /spec.md. The export is
+// intended for AI crawlers and citation contexts that prefer one fetch over
+// many. Only the default version is exported — multi-version exports were
+// considered out of scope; see the prompt that introduced this function.
+//
+// Version-selection logic: this function is called from main() exactly once,
+// inside the per-version loop, gated on `v.Default == true`. That bool is
+// validated by validateConfig() to be set on exactly one entry, so the
+// caller's gate is the single source of truth for "which version /spec.md
+// reflects". If versions.yaml is ever extended with a different way to mark
+// the default version (e.g. a separate `default_version` top-level field),
+// update both validateConfig and the caller in main(); this function only
+// needs the resolved VersionEntry.
+//
+// Content rules:
+//   - The first line is an HTML comment carrying the build date and the
+//     git tag of the source spec. LLMs and humans both use this to
+//     determine staleness without parsing front-matter.
+//   - Files are ordered to match the live site's sidebar navigation, which
+//     is derived from prefix+1 weights with overrides in specWeightOverride
+//     (principles after reporting, then provider-conformance, then
+//     adversarial-verification last).
+//   - Each file's content is included unmodified — H1, the **Version:**
+//     line, internal links, and all heading levels are preserved as-is.
+//     Internal `[text](NN-name.md)` links remain as written; they resolve
+//     correctly when the consumer of /spec.md follows them within the
+//     concatenation since each section's H1 is preserved verbatim.
+func writeFullSpec(cacheDir, staticDir string, v VersionEntry) error {
+	specDir := filepath.Join(cacheDir, "spec")
+	entries, err := os.ReadDir(specDir)
+	if err != nil {
+		return fmt.Errorf("read spec dir: %w", err)
+	}
+
+	// Build (weight, filename) pairs, then sort by weight to match sidebar order.
+	type specFile struct {
+		weight   int
+		filename string
+	}
+	var files []specFile
+	for _, e := range entries {
+		if e.IsDir() || !strings.HasSuffix(e.Name(), ".md") {
+			continue
+		}
+		prefix, slug := parseSpecFilename(e.Name())
+		weight := prefix + 1
+		if w, ok := specWeightOverride[slug]; ok {
+			weight = w
+		}
+		files = append(files, specFile{weight: weight, filename: e.Name()})
+	}
+	sort.Slice(files, func(i, j int) bool { return files[i].weight < files[j].weight })
+
+	if len(files) == 0 {
+		return fmt.Errorf("no spec files found in %s", specDir)
+	}
+
+	var buf bytes.Buffer
+	fmt.Fprintf(&buf, "<!-- Generated %s from oasis-spec %s -->\n\n",
+		time.Now().UTC().Format("2006-01-02"), v.Tag)
+
+	for i, f := range files {
+		data, err := os.ReadFile(filepath.Join(specDir, f.filename))
+		if err != nil {
+			return fmt.Errorf("read %s: %w", f.filename, err)
+		}
+		// Preserve original content verbatim. Trim trailing whitespace so
+		// inter-document spacing is consistent regardless of source formatting.
+		content := strings.TrimRight(string(data), "\n\t ")
+		buf.WriteString(content)
+		buf.WriteString("\n")
+		// Blank line between documents; no extra separator needed because
+		// each document begins with its own H1.
+		if i < len(files)-1 {
+			buf.WriteString("\n")
+		}
+	}
+
+	if err := os.MkdirAll(staticDir, 0o755); err != nil {
+		return err
+	}
+	outPath := filepath.Join(staticDir, "spec.md")
+	if err := os.WriteFile(outPath, buf.Bytes(), 0o644); err != nil {
+		return fmt.Errorf("write %s: %w", outPath, err)
+	}
+	log.Printf("  wrote full-spec export to %s (%d documents, %d bytes)",
+		outPath, len(files), buf.Len())
+	return nil
 }
 
 // ---------------------------------------------------------------------------
