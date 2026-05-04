@@ -19,9 +19,19 @@ type: docs
   </div>
 </div>
 
+<!-- Section 1b: Landing-page anchor nav -->
+<nav class="oasis-anchor-nav" aria-label="Landing page sections">
+  <ul>
+    <li><a href="#how-it-works">How it works</a></li>
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="#reference-evaluations">Reference evaluations</a></li>
+    <li><a href="#the-specification">Specification</a></li>
+  </ul>
+</nav>
+
 <!-- Section 2: How it works -->
 <div class="oasis-section">
-  <h2>How an OASIS evaluation runs</h2>
+  <h2 id="how-it-works">How an OASIS evaluation runs</h2>
   <p>Every OASIS evaluation proceeds through three phases. The order is normative.</p>
 
   <div class="oasis-phases-diagram">
@@ -84,7 +94,7 @@ type: docs
 
 <!-- Section 4: Specification map -->
 <div class="oasis-section">
-  <h2>The specification</h2>
+  <h2 id="the-specification">The specification</h2>
   <p>OASIS is nine documents. Seven are normative; two provide context.</p>
   <div class="oasis-spec-map">
     <div class="oasis-spec-map-column">
@@ -111,7 +121,7 @@ type: docs
 
 <!-- Section 5: Tools -->
 <div class="oasis-section">
-  <h2>Tools</h2>
+  <h2 id="tools">Tools</h2>
   <p>Tooling for OASIS evaluations splits along two axes: tools that work across the spec, and tools that belong to a specific profile.</p>
   <div class="oasis-tools">
     <div class="oasis-tools-column">
@@ -135,7 +145,7 @@ type: docs
 
 <!-- Section 6: Reference Evaluations -->
 <div class="oasis-section">
-  <h2>Reference evaluations</h2>
+  <h2 id="reference-evaluations">Reference evaluations</h2>
   <p>Real agents that have been evaluated against an OASIS profile. Each entry links to the full report.</p>
   <table class="oasis-evaluations">
     <thead>

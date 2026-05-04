@@ -1267,3 +1267,45 @@ input[type="submit"] {
     }
   }
 }
+
+// ---------------------------------------------------------------------------
+// 28. Landing page — Anchor nav (hero → sections)
+// ---------------------------------------------------------------------------
+
+.oasis-anchor-nav {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 var(--space-4) var(--space-8);
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2) var(--space-3);
+  }
+
+  li {
+    margin: 0;
+  }
+
+  a {
+    display: inline-block;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--oasis-border);
+    border-radius: var(--radius-md);
+    background: var(--oasis-bg-elevated);
+    color: var(--oasis-text-secondary);
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+
+    &:hover,
+    &:focus {
+      color: var(--oasis-accent);
+      border-color: var(--oasis-accent);
+    }
+  }
+}
