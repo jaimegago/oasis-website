@@ -151,5 +151,5 @@ type: docs
       <span class="oasis-status-value">v1.0.0 final after the RC feedback period · second domain profile · adversarial verification reference implementation</span>
     </div>
   </div>
-  <p>OASIS is developed in the open. The specification, profiles, and tooling live at <a href="https://github.com/jaimegago/oasis-spec">github.com/jaimegago/oasis-spec</a>.</p>
+  <p>OASIS is developed in the open. The specification, profiles, and tooling live at <a href="https://github.com/jaimegago/oasis-spec">github.com/jaimegago/oasis-spec</a>. For the architectural choices and design rationale that shaped the standard, see <a href="/docs/decisions/">Design Decisions</a>.</p>
 </div>

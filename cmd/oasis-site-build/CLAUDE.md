@@ -14,6 +14,8 @@ Go command-line tool that reads the OASIS specification from tagged versions of 
 
 5. **Guides transformation** — Walk `guides/` in the cached clone. Each markdown file becomes a page under `content/en/docs/vX.Y/guides/`.
 
+5b. **Decisions transformation** — Fetch `docs/decisions.md` from the spec repository at the ref configured by `--decisions-ref` (default `main`) and render it as a single page at `content/en/docs/decisions.md`. This document is intentionally not versioned — it records how the spec came to be — so it lives at `/docs/decisions/` with no `vX.Y/` namespacing and no entry in `versions.yaml`.
+
 6. **Link validation** — Walk the output tree and verify every `relref` link resolves to an existing file. Hard failure on broken links.
 
 7. **Version manifest** — Write `data/versions.yaml` for Hugo to render the version dropdown.
@@ -39,4 +41,5 @@ The authoritative source for the scenario schema is `spec/02-scenarios.md` in th
 | `--output` | `./content/en/docs` | Content output directory |
 | `--cache` | `./.cache/oasis-spec` | Clone cache directory |
 | `--spec-repo` | `https://github.com/jaimegago/oasis-spec.git` | Spec repository URL |
+| `--decisions-ref` | `main` | Git ref of `--spec-repo` to read `docs/decisions.md` from |
 | `--clean` | `false` | Remove output directory before building |

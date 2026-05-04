@@ -10,6 +10,8 @@ A Hugo site using the Hugo Book theme that renders the OASIS specification as a 
 
 The specification content lives in a separate repository at github.com/jaimegago/oasis-spec. Content is pulled in at build time by a Go build script. This repository never modifies spec content — it only reads and renders it. The oasis-spec repository is the single source of truth for all specification text.
 
+The same build script also pulls `docs/decisions.md` from the latest `main` of oasis-spec and renders it as the unversioned **Design Decisions** page at `/docs/decisions/`. Decisions are deliberately outside `versions.yaml` because the document is a living record of how the spec came to be, not a versioned part of the spec itself.
+
 ## Build script
 
 The build script will live at `cmd/oasis-site-build/` (to be created in a later prompt). It is a Go program that fetches spec content from the oasis-spec repository and places it under `content/en/docs/` for Hugo to render.
