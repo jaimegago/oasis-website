@@ -22,10 +22,11 @@ jobs:
 
       # Must match the Hugo version pinned in deploy.yml.
       - name: Install Hugo extended
-        uses: peaceiris/actions-hugo@v3
-        with:
-          hugo-version: "0.160.1"
-          extended: true
+        env:
+          HUGO_VERSION: "0.160.1"
+        run: |
+          curl -sSLo /tmp/hugo.deb "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i /tmp/hugo.deb
 
       - name: Fetch Hugo theme module
         run: hugo mod get
