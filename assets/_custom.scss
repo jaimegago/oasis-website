@@ -1073,6 +1073,107 @@ input[type="submit"] {
 }
 
 // ---------------------------------------------------------------------------
+// 25b. Landing page — Tools (2-column)
+// ---------------------------------------------------------------------------
+
+.oasis-tools {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  margin-top: var(--space-6);
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+.oasis-tools-column {
+  h3 {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: var(--space-3);
+    color: var(--oasis-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  > p {
+    font-size: 0.9375rem;
+    color: var(--oasis-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-3);
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--oasis-border);
+    line-height: 1.5;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    p {
+      margin: 0 0 var(--space-1);
+      font-size: 0.9375rem;
+      line-height: 1.6;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      + p {
+        color: var(--oasis-text-secondary);
+      }
+    }
+
+    code {
+      font-weight: 600;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 25c. Landing page — Reference evaluations table
+// ---------------------------------------------------------------------------
+
+.oasis-evaluations {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-top: var(--space-6);
+  font-size: 0.9375rem;
+
+  th {
+    text-align: left;
+    background: var(--oasis-bg-elevated);
+    font-weight: 600;
+    color: var(--oasis-text);
+    border-bottom: 2px solid var(--oasis-border-strong);
+    padding: var(--space-2) var(--space-4);
+  }
+
+  td {
+    border-bottom: 1px solid var(--oasis-border);
+    padding: var(--space-3) var(--space-4);
+    color: var(--oasis-text);
+    vertical-align: top;
+  }
+
+  tbody tr:nth-child(2n) {
+    background: var(--oasis-bg-elevated);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // 26. Landing page — Status grid
 // ---------------------------------------------------------------------------
 
@@ -1106,36 +1207,36 @@ input[type="submit"] {
 }
 
 // ---------------------------------------------------------------------------
-// 27. Site footer (3-column, all pages)
+// 27. Site footer (all pages)
 // ---------------------------------------------------------------------------
 
 .oasis-footer {
   border-top: 1px solid var(--oasis-border);
-  padding: var(--space-10) 0 var(--space-8);
+  padding: var(--space-8) 0;
   margin-top: var(--space-12);
 }
 
 .oasis-footer-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: var(--space-8);
   max-width: 860px;
   margin: 0 auto;
-
-  @media (max-width: 720px) {
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
-    text-align: center;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
 }
 
 .oasis-footer-links {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-6);
 
   li {
-    margin-bottom: var(--space-2);
+    margin: 0;
   }
 
   a {
@@ -1149,54 +1250,20 @@ input[type="submit"] {
   }
 }
 
-.oasis-footer-brand {
-  text-align: center;
-}
-
-.oasis-footer-wordmark {
-  font-weight: 700;
-  font-size: 1.25rem;
-  color: var(--oasis-text);
-  margin-bottom: var(--space-1);
-}
-
-.oasis-footer-tagline {
-  font-size: 0.8125rem;
-  color: var(--oasis-text-secondary);
-  margin-bottom: var(--space-2);
-}
-
 .oasis-footer-license {
-  font-size: 0.75rem;
+  margin: 0;
+  font-size: 0.8125rem;
   color: var(--oasis-text-tertiary);
-}
+  line-height: 1.5;
 
-.oasis-footer-meta {
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-start;
+  a {
+    color: var(--oasis-text-tertiary);
+    text-decoration: underline;
+    text-decoration-color: var(--oasis-border);
 
-  @media (max-width: 720px) {
-    text-align: center;
-    align-items: center;
+    &:hover {
+      color: var(--oasis-accent);
+      text-decoration-color: var(--oasis-accent);
+    }
   }
-}
-
-.oasis-footer-status {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: 0.875rem;
-  color: var(--oasis-text-secondary);
-  font-weight: 500;
-}
-
-.oasis-footer-status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--oasis-accent);
-  display: inline-block;
 }

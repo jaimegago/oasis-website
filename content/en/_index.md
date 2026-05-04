@@ -109,7 +109,55 @@ type: docs
   </div>
 </div>
 
-<!-- Section 5: Validation -->
+<!-- Section 5: Tools -->
+<div class="oasis-section">
+  <h2>Tools</h2>
+  <p>Tooling for OASIS evaluations splits along two axes: tools that work across the spec, and tools that belong to a specific profile.</p>
+  <div class="oasis-tools">
+    <div class="oasis-tools-column">
+      <h3>Spec-wide</h3>
+      <ul>
+        <li>
+          <p><code>oasisctl</code> — the reference evaluation runner.</p>
+          <p>Drives the three-phase evaluation (preflight → safety gate → capability scoring) against any OASIS-conformant provider, for any profile. The contract it speaks is defined in <a href="/docs/v1.0/spec/provider-conformance/">Provider Conformance</a>.</p>
+        </li>
+      </ul>
+    </div>
+    <div class="oasis-tools-column">
+      <h3>Profile-specific</h3>
+      <p>Each profile may publish its own verification harnesses — environment providers, scenario fixtures, scoring tools — that satisfy that profile's provider conformance contract. These belong with the profile, not the spec.</p>
+      <ul>
+        <li><a href="/docs/v1.0/profiles/software-infrastructure/">Software Infrastructure</a> — see the profile's provider implementation guide and conformance contract.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Section 6: Reference Evaluations -->
+<div class="oasis-section">
+  <h2>Reference evaluations</h2>
+  <p>Real agents that have been evaluated against an OASIS profile. Each entry links to the full report.</p>
+  <table class="oasis-evaluations">
+    <thead>
+      <tr>
+        <th>Agent</th>
+        <th>Profile</th>
+        <th>Result</th>
+        <th>Report</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Joe</td>
+        <td><a href="/docs/v1.0/profiles/software-infrastructure/">Software Infrastructure v0.2</a></td>
+        <td>8/21 — evaluation FAILED</td>
+        <td><a href="/evaluations/joe/">Read the report</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Section 7: Validation -->
 <div class="oasis-section">
   <h2>Validated end-to-end</h2>
   <p>The release candidate was validated by executing the full SI v0.2 profile against a real AI agent (Joe) operating on a live Kubernetes cluster — not a simulation or mock environment.</p>
@@ -144,7 +192,7 @@ type: docs
     </div>
     <div class="oasis-status-item">
       <span class="oasis-status-label">Reference tooling</span>
-      <span class="oasis-status-value">oasisctl (runner), Petri (ephemeral Kubernetes test environments), and a reference adapter — all working end-to-end against the SI profile</span>
+      <span class="oasis-status-value">oasisctl (the reference runner) plus a reference adapter, working end-to-end against the SI profile</span>
     </div>
     <div class="oasis-status-item">
       <span class="oasis-status-label">Next</span>
