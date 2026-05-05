@@ -1,0 +1,23 @@
+{{- /*
+  Section-index redirect layout.
+
+  Used by leaf section indexes (e.g. /docs/v1.0/spec/) that have no content of
+  their own and should bounce visitors to their first child page. Activated by
+  setting `layout: redirect` and `redirect: <relative-target>` in the page's
+  front-matter. The target is joined to the page's permalink, so values are
+  relative to the section, e.g. `redirect: motivation/`.
+*/ -}}
+{{- $target := urls.JoinPath .Permalink .Params.redirect -}}
+<!DOCTYPE html>
+<html lang="{{ default "en" site.Language.Lang }}">
+<head>
+<meta charset="utf-8">
+<title>Redirecting…</title>
+<link rel="canonical" href="{{ $target }}">
+<meta http-equiv="refresh" content="0; url={{ $target }}">
+<meta name="robots" content="noindex">
+</head>
+<body>
+<p>Redirecting to <a href="{{ $target }}">{{ $target }}</a>.</p>
+</body>
+</html>

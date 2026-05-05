@@ -280,17 +280,12 @@ func transformSpec(cacheDir, versionOut string) error {
 		return err
 	}
 
-	// Write _index.md for the spec section
-	indexContent := `---
-title: Specification
-weight: 1
-type: docs
-bookCollapseSection: true
----
-
-The OASIS core specification documents.
-`
-	if err := os.WriteFile(filepath.Join(outDir, "_index.md"), []byte(indexContent), 0o644); err != nil {
+	// Write _index.md for the spec section. The page itself only renders a
+	// meta refresh that bounces visitors to the first spec page (Why OASIS
+	// Exists). The lowest-weight spec page is `motivation` via the natural
+	// 00-prefix → weight 1 mapping in transformSpecFile.
+	if err := writeSectionIndex(outDir, "Specification", 1,
+		"The OASIS core specification documents.", "motivation/"); err != nil {
 		return err
 	}
 
@@ -607,17 +602,13 @@ func transformProfiles(cacheDir, versionOut, versionSlug, staticDir string) erro
 		return err
 	}
 
-	// Write profiles section _index.md
-	indexContent := `---
-title: Profiles
-weight: 2
-type: docs
-bookCollapseSection: true
----
-
-Domain profiles define how OASIS applies to specific operational environments.
-`
-	if err := os.WriteFile(filepath.Join(profilesOutDir, "_index.md"), []byte(indexContent), 0o644); err != nil {
+	// Write profiles section _index.md. The page only emits a meta refresh
+	// to the first profile. Today there is one profile (software-
+	// infrastructure); if a second is added with an alphabetically earlier
+	// slug, update the redirect target.
+	if err := writeSectionIndex(profilesOutDir, "Profiles", 2,
+		"Domain profiles define how OASIS applies to specific operational environments.",
+		"software-infrastructure/"); err != nil {
 		return err
 	}
 
@@ -1181,17 +1172,14 @@ func transformGuides(cacheDir, versionOut string) error {
 		return err
 	}
 
-	// Write guides section _index.md
-	indexContent := `---
-title: Guides
-weight: 3
-type: docs
-bookCollapseSection: true
----
-
-Companion guides for OASIS profile authors and implementers.
-`
-	if err := os.WriteFile(filepath.Join(outDir, "_index.md"), []byte(indexContent), 0o644); err != nil {
+	// Write guides section _index.md. The page only emits a meta refresh to
+	// the first guide. Guide weights are assigned by directory-listing order
+	// (see the loop below), so the alphabetically first guide gets weight 1.
+	// Today that is `profile-authoring`; if a guide with an earlier slug is
+	// added (e.g. a future `quickstart.md`), update the redirect target.
+	if err := writeSectionIndex(outDir, "Guides", 3,
+		"Companion guides for OASIS profile authors and implementers.",
+		"profile-authoring/"); err != nil {
 		return err
 	}
 
@@ -1419,10 +1407,19 @@ func writeVersionManifest(cfg *VersionsConfig) error {
 // Version index
 // ---------------------------------------------------------------------------
 
+// writeVersionIndex writes the version landing page (e.g. /docs/v1.0/). This
+// is the page visitors hit from the marketing landing page's "Read the spec"
+// CTA, so it needs to do real wayfinding work: orient newcomers, surface the
+// release status, and route them to one of the three top-level groupings
+// (Specification / Profiles / Guides) along with source/changelog/discuss
+// pointers. The leaf section indexes themselves (spec, profiles, guides)
+// redirect to their first child — see writeSectionIndex.
 func writeVersionIndex(versionOut string, v VersionEntry) error {
 	if err := os.MkdirAll(versionOut, 0o755); err != nil {
 		return err
 	}
+
+	statusBadge := versionStatusBadge(v)
 
 	content := fmt.Sprintf(`---
 title: "%s"
@@ -1431,8 +1428,76 @@ type: docs
 bookCollapseSection: true
 ---
 
-OASIS specification %s (%s).
-`, v.Version, v.Label, v.Status)
+OASIS is an open standard for evaluating AI agents that operate in real-world systems. It is for engineering teams, evaluators, and researchers who need a portable way to describe what an agent should do, what it must not do, and how to score the result.
+
+%s
+
+## Read the spec
+
+- **[Specification]({{< relref "spec/motivation" >}})** — the normative documents defining OASIS: Core, Scenarios, Domain Profiles, Execution Model, Reporting & Conformance, and Design Principles & Context.
+- **[Profiles]({{< relref "profiles/software-infrastructure" >}})** — domain-specific instantiations of the spec. %s ships the Software Infrastructure profile.
+- **[Guides]({{< relref "guides/profile-authoring" >}})** — how-tos for spec authors and implementers.
+
+## Source, changes, and discussion
+
+- **GitHub** — [github.com/jaimegago/oasis-spec](https://github.com/jaimegago/oasis-spec), the specification repository.
+- **Changelog** — [release notes](https://github.com/jaimegago/oasis-spec/blob/main/CHANGELOG.md).
+- **Discuss** — [GitHub Discussions](https://github.com/jaimegago/oasis-spec/discussions) for questions, proposals, and feedback.
+`, v.Version, statusBadge, v.Label)
 
 	return os.WriteFile(filepath.Join(versionOut, "_index.md"), []byte(content), 0o644)
+}
+
+// versionStatusBadge renders the Hugo Book theme's `badge` shortcode tuned to
+// the version's lifecycle status. Style names match the theme's palette
+// (note/tip/important/warning/caution/default/info/success/danger).
+func versionStatusBadge(v VersionEntry) string {
+	var style, value string
+	switch v.Status {
+	case "rc":
+		style = "warning"
+		value = fmt.Sprintf("%s — release candidate, soft-launched", v.Label)
+	case "current":
+		style = "success"
+		value = fmt.Sprintf("%s — current release", v.Label)
+	case "draft":
+		style = "warning"
+		value = fmt.Sprintf("%s — draft, in development", v.Label)
+	case "archived":
+		style = "default"
+		value = fmt.Sprintf("%s — archived", v.Label)
+	default:
+		style = "default"
+		value = v.Label
+	}
+	return fmt.Sprintf(`{{< badge style=%q title="Status" value=%q >}}`, style, value)
+}
+
+// writeSectionIndex writes a leaf section _index.md (spec, profiles, guides)
+// configured to bounce visitors to its first child page via the
+// layouts/_default/redirect.html meta-refresh layout. The redirect target is
+// resolved as `{{ .Permalink }}{{ .Params.redirect }}`, so `firstChildSlug`
+// must be a section-relative path with a trailing slash (e.g. `motivation/`).
+//
+// `description` is preserved as a fallback for crawlers that don't follow the
+// meta refresh and as the page's noindex'd description.
+//
+// CONSTRAINT: `firstChildSlug` must match the lowest-weight rendered child of
+// the section. If a guide or profile is added with a smaller weight, update
+// the corresponding caller. Stage 6 link validation does not catch this — the
+// redirect param is not a relref.
+func writeSectionIndex(outDir, title string, weight int, description, firstChildSlug string) error {
+	content := fmt.Sprintf(`---
+title: %s
+weight: %d
+type: docs
+bookCollapseSection: true
+layout: redirect
+redirect: %s
+description: %q
+---
+
+%s
+`, title, weight, firstChildSlug, description, description)
+	return os.WriteFile(filepath.Join(outDir, "_index.md"), []byte(content), 0o644)
 }
