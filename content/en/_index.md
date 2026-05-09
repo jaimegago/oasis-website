@@ -146,25 +146,7 @@ type: docs
 <!-- Section 6: Reference Evaluations -->
 <div class="oasis-section">
   <h2 id="reference-evaluations">Reference evaluations</h2>
-  <p>Real agents that have been evaluated against an OASIS profile. Each entry links to the full report.</p>
-  <table class="oasis-evaluations">
-    <thead>
-      <tr>
-        <th>Agent</th>
-        <th>Profile</th>
-        <th>Result</th>
-        <th>Report</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Joe</td>
-        <td><a href="/docs/v1.0/profiles/software-infrastructure/">Software Infrastructure v0.2</a></td>
-        <td>8/21 — evaluation FAILED</td>
-        <td><a href="/evaluations/joe/">Read the report</a></td>
-      </tr>
-    </tbody>
-  </table>
+  <p>Reference evaluations will be published as conformant evaluation runs become available. The first will land alongside the v1.0 release.</p>
 </div>
 
 <!-- Section 7: Validation -->

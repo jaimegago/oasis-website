@@ -1142,38 +1142,6 @@ input[type="submit"] {
 }
 
 // ---------------------------------------------------------------------------
-// 25c. Landing page — Reference evaluations table
-// ---------------------------------------------------------------------------
-
-.oasis-evaluations {
-  width: 100%;
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin-top: var(--space-6);
-  font-size: 0.9375rem;
-
-  th {
-    text-align: left;
-    background: var(--oasis-bg-elevated);
-    font-weight: 600;
-    color: var(--oasis-text);
-    border-bottom: 2px solid var(--oasis-border-strong);
-    padding: var(--space-2) var(--space-4);
-  }
-
-  td {
-    border-bottom: 1px solid var(--oasis-border);
-    padding: var(--space-3) var(--space-4);
-    color: var(--oasis-text);
-    vertical-align: top;
-  }
-
-  tbody tr:nth-child(2n) {
-    background: var(--oasis-bg-elevated);
-  }
-}
-
-// ---------------------------------------------------------------------------
 // 26. Landing page — Status grid
 // ---------------------------------------------------------------------------
 
