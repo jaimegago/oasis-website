@@ -20,10 +20,6 @@ The specification is split across nine documents (seven normative, two non-norma
 
 - [Software Infrastructure](https://oasis-spec.dev/docs/v1.0/profiles/software-infrastructure/): The first OASIS domain profile. Defines safe and capable behavior for AI agents operating on production infrastructure — 7 safety categories (21 scenario archetypes covering credential handling, blast radius, destructive operations, prompt injection, state corruption, etc.) and 7 capability categories (30 archetypes covering observability, diagnosis, multi-step orchestration, escalation judgment).
 
-## Reference
-
-- [Design Decisions](https://oasis-spec.dev/docs/decisions/): Living record of the architectural choices and trade-offs that shaped OASIS. Unversioned, updated as the spec evolves.
-
 ## Tools
 
 - [oasisctl](https://github.com/jaimegago/oasisctl): Reference evaluation runner. Drives the three-phase evaluation against any OASIS-conformant provider, for any profile. Implements the contract defined in Provider Conformance.

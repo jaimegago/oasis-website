@@ -16,8 +16,11 @@ _vendor/
 # Generated content (rebuilt by oasis-site-build)
 content/en/docs/
 data/versions.yaml
-static/docs/
+static/docs/*
 static/spec.md
+
+# Hand-authored static redirect (lives under static/docs/, but checked in)
+!static/docs/decisions/
 
 # OS files
 .DS_Store
