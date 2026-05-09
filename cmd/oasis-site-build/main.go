@@ -50,13 +50,12 @@ type VersionManifestEntry struct {
 // ---------------------------------------------------------------------------
 
 var (
-	flagConfig       = flag.String("config", "./versions.yaml", "path to versions.yaml")
-	flagOutput       = flag.String("output", "./content/en/docs", "content output directory")
-	flagStatic       = flag.String("static", "./static", "Hugo static output directory")
-	flagCache        = flag.String("cache", "./.cache/oasis-spec", "clone cache directory")
-	flagSpecRepo     = flag.String("spec-repo", "https://github.com/jaimegago/oasis-spec.git", "spec repository URL")
-	flagDecisionsRef = flag.String("decisions-ref", "main", "git ref of --spec-repo to read docs/decisions.md from (unversioned, living document)")
-	flagClean        = flag.Bool("clean", false, "remove output directory before building")
+	flagConfig   = flag.String("config", "./versions.yaml", "path to versions.yaml")
+	flagOutput   = flag.String("output", "./content/en/docs", "content output directory")
+	flagStatic   = flag.String("static", "./static", "Hugo static output directory")
+	flagCache    = flag.String("cache", "./.cache/oasis-spec", "clone cache directory")
+	flagSpecRepo = flag.String("spec-repo", "https://github.com/jaimegago/oasis-spec.git", "spec repository URL")
+	flagClean    = flag.Bool("clean", false, "remove output directory before building")
 )
 
 // ---------------------------------------------------------------------------
@@ -159,11 +158,6 @@ func main() {
 		if err := writeVersionIndex(versionOut, v); err != nil {
 			log.Fatalf("write version index %s: %v", v.Version, err)
 		}
-	}
-
-	// Stage 5b: Decisions (unversioned, living document)
-	if err := transformDecisions(*flagDecisionsRef); err != nil {
-		log.Fatalf("transform decisions: %v", err)
 	}
 
 	// Stage 6: Link validation
@@ -1221,49 +1215,6 @@ type: docs
 `, title, weight, desc)
 
 	return os.WriteFile(filepath.Join(outDir, slug+".md"), []byte(fm+"\n"+body), 0o644)
-}
-
-// ---------------------------------------------------------------------------
-// Stage 5b: Decisions (unversioned)
-// ---------------------------------------------------------------------------
-
-// transformDecisions fetches docs/decisions.md from the spec repository at the
-// configured ref (typically main) and renders it as a single Hugo page at
-// <output>/decisions.md. The decisions document is intentionally outside
-// versions.yaml: it is a living document about how the spec came to be, not a
-// versioned part of the spec itself, so it has no version selector and no
-// vX.Y/ namespacing in the rendered URL.
-func transformDecisions(ref string) error {
-	cacheDir := filepath.Join(*flagCache, ref)
-	log.Printf("processing decisions (ref %s)", ref)
-
-	if err := fetchVersion(cacheDir, ref); err != nil {
-		return fmt.Errorf("fetch ref %s: %w", ref, err)
-	}
-
-	srcPath := filepath.Join(cacheDir, "docs", "decisions.md")
-	data, err := os.ReadFile(srcPath)
-	if err != nil {
-		return fmt.Errorf("read %s: %w", srcPath, err)
-	}
-
-	body := removeH1(string(data))
-	desc := extractDescription(body)
-
-	fm := fmt.Sprintf(`---
-title: "Design Decisions"
-weight: 100
-description: %q
-type: docs
----
-`, desc)
-
-	if err := os.MkdirAll(*flagOutput, 0o755); err != nil {
-		return err
-	}
-
-	outPath := filepath.Join(*flagOutput, "decisions.md")
-	return os.WriteFile(outPath, []byte(fm+"\n"+body), 0o644)
 }
 
 // ---------------------------------------------------------------------------
