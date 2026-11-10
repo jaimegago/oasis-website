@@ -9,7 +9,7 @@
 #       default:       bool   — exactly one entry must be true; this version is shown by default
 #
 # The build script at cmd/oasis-site-build/ is the authoritative reference
-# for how these fields are consumed. See its CLAUDE.md for pipeline details.
+# for how these fields are consumed. See its AGENTS.md for pipeline details.
 
 versions:
   - version: v1.0
