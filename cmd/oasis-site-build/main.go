@@ -1399,9 +1399,12 @@ OASIS is an open standard for evaluating AI agents that operate in real-world sy
 	return os.WriteFile(filepath.Join(versionOut, "_index.md"), []byte(content), 0o644)
 }
 
-// versionStatusBadge renders the Hugo Book theme's `badge` shortcode tuned to
-// the version's lifecycle status. Style names match the theme's palette
-// (note/tip/important/warning/caution/default/info/success/danger).
+// versionStatusBadge renders the site's `badge` shortcode
+// (layouts/shortcodes/badge.html) tuned to the version's lifecycle status.
+// The shortcode was hugo-book's until the theme removed it in v0.16.0; the
+// site now owns it, with the same parameters. Style names are kept from the
+// theme's vocabulary (note/tip/important/warning/caution/default/info/
+// success/danger) and are carried as a class.
 func versionStatusBadge(v VersionEntry) string {
 	var style, value string
 	switch v.Status {

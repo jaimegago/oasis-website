@@ -1,0 +1,17 @@
+{{- /*
+  badge — site-owned replacement for hugo-book's `badge` shortcode, which the
+  theme removed in v0.16.0 (upstream d347e14). cmd/oasis-site-build emits it on
+  every version landing page:
+
+    {{< badge style="warning" title="Status" value="v1.0.0-rc1 — …" >}}
+
+  Same parameters as the theme's (style/title/value, named or positional).
+  Deliberately self-contained — no theme partials, no theme CSS variables — so
+  the theme pin can move without touching this. Styles: assets/_custom.scss
+  § Status badge.
+*/ -}}
+{{- $style := or (.Get "style") (.Get 0) "default" -}}
+<span class="oasis-badge oasis-badge-{{ $style }}">
+  {{- with or (.Get "title") (.Get 1) }}<span class="oasis-badge-title">{{ . | plainify }}</span>{{ end -}}
+  {{- with or (.Get "value") (.Get 2) }}<span class="oasis-badge-value">{{ . | plainify }}</span>{{ end -}}
+</span>

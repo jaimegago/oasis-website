@@ -833,6 +833,38 @@ input[type="submit"] {
 }
 
 // ---------------------------------------------------------------------------
+// 19b. Status badge — layouts/shortcodes/badge.html
+// ---------------------------------------------------------------------------
+// Replaces the theme's .book-badge (removed upstream in hugo-book v0.16.0).
+// One look for every `style` value: the palette has no warning/success
+// tokens, and the invariant forbids hard-coded colour, so the style name is
+// carried as a class for later use and the accent token does the work.
+
+.oasis-badge {
+  display: inline-flex;
+  align-items: stretch;
+  vertical-align: middle;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  border: 1px solid var(--oasis-accent);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.oasis-badge-title {
+  padding: 0 var(--space-2);
+  background: var(--oasis-code-bg);
+  color: var(--oasis-text-secondary);
+}
+
+.oasis-badge-value {
+  padding: 0 var(--space-2);
+  background: var(--oasis-accent);
+  color: var(--oasis-bg-elevated);
+}
+
+// ---------------------------------------------------------------------------
 // 20. Callout boxes
 // ---------------------------------------------------------------------------
 
