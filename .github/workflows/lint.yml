@@ -35,8 +35,12 @@ jobs:
       - name: Go test
         run: go test ./cmd/oasis-site-build/...
 
+      # `hugo mod download` fetches exactly the theme version pinned in go.mod.
+      # `hugo mod get` (used until 2026-11-10) upgraded the pin to the latest
+      # tagged release, and hugo-book v0.16.0 removed the `badge` shortcode the
+      # site's build script emits — every deploy since 2026-08-07 failed on it.
       - name: Fetch Hugo theme module
-        run: hugo mod get
+        run: hugo mod download
 
       - name: Download self-hosted fonts
         run: bash scripts/fetch-fonts.sh

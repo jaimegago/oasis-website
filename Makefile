@@ -1,12 +1,15 @@
 .DEFAULT_GOAL := help
 
-.PHONY: serve build clean generate fonts help
+.PHONY: serve build clean generate fonts og-image help
 
 generate: ## Fetch spec content and generate Hugo pages
 	go run ./cmd/oasis-site-build/
 
 fonts: ## Download self-hosted web fonts (idempotent)
 	bash scripts/fetch-fonts.sh
+
+og-image: ## Regenerate static/og-image.png from scripts/og-image.svg (needs rsvg-convert)
+	bash scripts/render-og-image.sh
 
 serve: generate fonts ## Generate content, fetch fonts, then start local development server with drafts enabled
 	hugo server -D

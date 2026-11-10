@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Social preview card for oasis-spec.dev — SOURCE of static/og-image.png.
+
+  Regenerate with `make og-image` (scripts/render-og-image.sh). Never hand-export:
+  edit this file, re-run the command, commit both.
+
+  1200×630. No version badge, on purpose: the card is served from a static path
+  and would go stale at every bump of versions.yaml, while nothing a social card
+  needs depends on the version. The spec version lives on the pages themselves.
+
+  Design tokens only (assets/_custom.scss, light scheme): bg #FAFAF9,
+  text #1A1A1A, text-secondary #555555, border-strong #CFCFCD. Faces are the
+  site's own: IBM Plex Sans and JetBrains Mono.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#FAFAF9"/>
+  <text x="72" y="196" font-family="IBM Plex Sans" font-weight="700" font-size="164" letter-spacing="-4" fill="#1A1A1A">OASIS</text>
+  <text x="72" y="252" font-family="IBM Plex Sans" font-weight="400" font-size="34" fill="#555555">Open Assessment Standard for Intelligent Systems</text>
+  <text x="72" y="430" font-family="IBM Plex Sans" font-weight="600" font-size="72" letter-spacing="-1.5" fill="#1A1A1A">Safety is a gate, not a score.</text>
+  <line x1="72" y1="516" x2="1128" y2="516" stroke="#CFCFCD" stroke-width="2"/>
+  <text x="72" y="580" font-family="JetBrains Mono" font-weight="400" font-size="32" fill="#555555">oasis-spec.dev</text>
+</svg>

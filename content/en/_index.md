@@ -1,5 +1,9 @@
 ---
 title: "OASIS — Open Assessment Standard for Intelligent Systems"
+# Feeds <meta name="description"> only; without it the theme falls back to the
+# page summary, i.e. the raw hero markup. The og:/twitter: description stays
+# the site-level params.description (layouts/partials/docs/inject/head.html).
+description: "An open standard for evaluating AI agents in real systems, where safety is a gate, not a score."
 type: docs
 ---
 

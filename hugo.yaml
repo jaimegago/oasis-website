@@ -46,8 +46,11 @@ params:
   BookRepo: https://github.com/jaimegago/oasis-website
   BookEditPath: edit/main
 
-  # Open Graph / Twitter Card social image (relative to static/)
+  # Open Graph / Twitter Card social image (relative to static/). The PNG is
+  # GENERATED from scripts/og-image.svg by `make og-image`; edit the SVG,
+  # never the PNG. The alt text is emitted as og:image:alt / twitter:image:alt.
   socialImage: og-image.png
+  socialImageAlt: "OASIS — Open Assessment Standard for Intelligent Systems. Safety is a gate, not a score. oasis-spec.dev"
 
   # Algolia DocSearch v4 — real credentials are injected at build time from
   # GitHub Actions secrets (ALGOLIA_APP_ID, ALGOLIA_INDEX_NAME, ALGOLIA_API_KEY).

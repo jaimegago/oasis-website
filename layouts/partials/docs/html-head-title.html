@@ -1,0 +1,5 @@
+{{- /* Overrides Hugo Book's html-head-title, which renders "<page> | <site>"
+       and so printed the site name twice on the homepage, whose title is the
+       site title. Same output as the theme everywhere else. */ -}}
+{{- $title := partial "docs/title" . -}}
+{{- if and $title (ne $title .Site.Title) }}{{ $title }} | {{ end }}{{ .Site.Title -}}

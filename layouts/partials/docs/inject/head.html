@@ -3,10 +3,15 @@
 {{/* Algolia DocSearch site verification */}}
 <meta name="algolia-site-verification" content="595A452EFF556B07">
 
-{{/* Open Graph meta tags */}}
+{{/* Open Graph meta tags.
+     The homepage's social description is the site-level one (hugo.yaml
+     params.description); its front-matter description feeds only the
+     <meta name="description"> tag the theme emits. Every other page uses its
+     own description, falling back to the site's. */}}
 {{- $title := .Title | default .Site.Title -}}
-{{- $description := .Description | default .Site.Params.description -}}
+{{- $description := cond .IsHome .Site.Params.description (.Description | default .Site.Params.description) -}}
 {{- $image := printf "%s%s" .Site.BaseURL (.Site.Params.socialImage | default "og-image.png") -}}
+{{- $imageAlt := .Site.Params.socialImageAlt -}}
 <meta property="og:title" content="{{ $title }}" />
 <meta property="og:description" content="{{ $description }}" />
 <meta property="og:type" content="{{ cond .IsHome "website" "article" }}" />
@@ -14,6 +19,7 @@
 <meta property="og:image" content="{{ $image }}" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="{{ $imageAlt }}" />
 <meta property="og:site_name" content="OASIS" />
 <meta property="og:locale" content="en_US" />
 
@@ -22,6 +28,7 @@
 <meta name="twitter:title" content="{{ $title }}" />
 <meta name="twitter:description" content="{{ $description }}" />
 <meta name="twitter:image" content="{{ $image }}" />
+<meta name="twitter:image:alt" content="{{ $imageAlt }}" />
 
 {{/* JSON-LD structured data — landing page only.
      TechArticle is the closest schema.org type for a technical specification

@@ -30,6 +30,10 @@ These rules must not be broken by any future session:
 - **Self-hosted fonts**: IBM Plex Sans and JetBrains Mono are downloaded by `scripts/fetch-fonts.sh` into `static/fonts/` (gitignored). No runtime requests to external font services.
 - **Use design tokens**: All colors must come from `--oasis-*` CSS custom properties. Never hard-code hex color values in stylesheets. All spacing uses `--space-*` tokens; all border-radius uses `--radius-*` tokens.
 
+## Social preview image
+
+`static/og-image.png` (1200×630) is **generated, never hand-exported**. Its source is `scripts/og-image.svg`; `make og-image` renders it with rsvg-convert (`brew install librsvg`), fetching the TTF faces once into `.cache/fonts/`. `scripts/render-og-image.sh --check` verifies the committed PNG reproduces. The card carries no version badge, so a `versions.yaml` bump never stales it. `og:image:alt` / `twitter:image:alt` come from `params.socialImageAlt` in `hugo.yaml`; all social tags are emitted by `layouts/partials/docs/inject/head.html`.
+
 ## Deployment
 
 The site deploys to GitHub Pages automatically via GitHub Actions. Three workflow files live under `.github/workflows/`:
@@ -39,6 +43,8 @@ The site deploys to GitHub Pages automatically via GitHub Actions. Three workflo
 - **`deploy.yml`** — Runs on push to `main` and on manual `workflow_dispatch`. Two jobs: `build` (installs Go, Hugo extended, fetches fonts, runs the build script against `versions.yaml` to populate `content/en/docs/`, then runs `hugo --minify`) and `deploy` (pushes the built `public/` directory to GitHub Pages). The deploy job only runs on the `main` branch — never on PRs.
 - **`pr-preview.yml`** — Runs on pull requests targeting `main`. Same build steps as `deploy.yml`, but instead of deploying, uploads `public/` as a downloadable artifact and posts a comment on the PR with a link.
 - **`lint.yml`** — Runs on every push to `main` and on PRs. Runs `go vet`, `go test` on the build script, then does a full site build with `hugo --renderToMemory` to verify the site compiles without errors.
+
+**Theme pin**: the workflows run `hugo mod download`, which fetches exactly the hugo-book version in `go.mod`. Do not change it back to `hugo mod get` — that upgrades the pin, and hugo-book v0.16.0 removed the `badge` shortcode `cmd/oasis-site-build` emits, which broke every deploy from 2026-08-07 to 2026-11-10.
 
 ### Build pipeline order
 
