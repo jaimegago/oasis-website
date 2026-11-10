@@ -28,12 +28,13 @@ jobs:
           curl -sSLo /tmp/hugo.deb "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
           sudo dpkg -i /tmp/hugo.deb
 
-      # `hugo mod download` fetches exactly the theme version pinned in go.mod.
-      # `hugo mod get` (used until 2026-11-10) upgraded the pin to the latest
-      # tagged release, and hugo-book v0.16.0 removed the `badge` shortcode the
-      # site's build script emits — every deploy since 2026-08-07 failed on it.
+      # `go mod download` fetches exactly the theme version pinned in go.mod
+      # into the module cache Hugo reads. `hugo mod get` (used until
+      # 2026-11-10) upgraded the pin to the latest tagged release, and
+      # hugo-book v0.16.0 removed the `badge` shortcode the site's build script
+      # emits — every deploy since 2026-08-07 failed on it.
       - name: Fetch Hugo theme module
-        run: hugo mod download
+        run: go mod download
 
       - name: Download self-hosted fonts
         run: bash scripts/fetch-fonts.sh

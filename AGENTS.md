@@ -44,7 +44,7 @@ The site deploys to GitHub Pages automatically via GitHub Actions. Three workflo
 - **`pr-preview.yml`** — Runs on pull requests targeting `main`. Same build steps as `deploy.yml`, but instead of deploying, uploads `public/` as a downloadable artifact and posts a comment on the PR with a link.
 - **`lint.yml`** — Runs on every push to `main` and on PRs. Runs `go vet`, `go test` on the build script, then does a full site build with `hugo --renderToMemory` to verify the site compiles without errors.
 
-**Theme pin**: the workflows run `hugo mod download`, which fetches exactly the hugo-book version in `go.mod`. Do not change it back to `hugo mod get` — that upgrades the pin, and hugo-book v0.16.0 removed the `badge` shortcode `cmd/oasis-site-build` emits, which broke every deploy from 2026-08-07 to 2026-11-10.
+**Theme pin**: the workflows run `go mod download`, which fetches exactly the hugo-book version in `go.mod`. Do not change it back to `hugo mod get` — that upgrades the pin, and hugo-book v0.16.0 removed the `badge` shortcode `cmd/oasis-site-build` emits, which broke every deploy from 2026-08-07 to 2026-11-10.
 
 ### Build pipeline order
 
