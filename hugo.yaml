@@ -62,3 +62,9 @@ params:
     appId: PLACEHOLDER_APP_ID
     indexName: PLACEHOLDER_INDEX_NAME
     apiKey: PLACEHOLDER_API_KEY
+
+  # PLACEHOLDER: register a GoatCounter site for oasis-spec.dev and replace
+  # the subdomain below (https://www.goatcounter.com). Gated to production in
+  # layouts/partials/docs/inject/head.html, the same way jaimegago.dev gates
+  # its own counter.
+  goatcounterURL: "https://oasis-spec.goatcounter.com/count"

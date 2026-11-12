@@ -73,3 +73,11 @@
 {{- $appId := or (os.Getenv "ALGOLIA_APP_ID") .Site.Params.algolia.appId -}}
 <link rel="preconnect" href="https://{{ $appId }}-dsn.algolia.net" crossorigin />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@4.6.2/dist/style.min.css" crossorigin="anonymous" />
+
+{{/* GoatCounter: cookie-free visit counter, production only — mirrors
+     jaimegago.dev's themes/jaime/layouts/partials/analytics.html. */}}
+{{- if and hugo.IsProduction (not hugo.IsServer) -}}
+  {{- with .Site.Params.goatcounterURL -}}
+    <script data-goatcounter="{{ . }}" async src="//gc.zgo.at/count.js"></script>
+  {{- end -}}
+{{- end -}}
